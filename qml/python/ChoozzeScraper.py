@@ -113,7 +113,7 @@ class Encryption:
 
   def decrypt(self,ciphertext):
     if not self.isEnabled():
-      return ciphertext.encode()
+      return ciphertext.decode()
 
     salt = ciphertext[0:Encryption.SALT_SIZE]
     ciphertext_sans_salt = ciphertext[Encryption.SALT_SIZE:]
@@ -131,8 +131,8 @@ class ChoozzeScraper:
   update_timeout = 3600 # 1 Hours timeout
   data_file = '.ChoozzeScraper.data.bin' # Hidden data file
 
-  MOCK = False
-  DEBUG = False
+  MOCK = True
+  DEBUG = True
 
   # Mock Data
   MOCK_data = """<!DOCTYPE html>
