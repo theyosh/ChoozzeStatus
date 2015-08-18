@@ -131,8 +131,8 @@ class ChoozzeScraper:
   update_timeout = 3600 # 1 Hours timeout
   data_file = '.ChoozzeScraper.data.bin' # Hidden data file
 
-  MOCK = True
-  DEBUG = True
+  MOCK = False
+  DEBUG = False
 
   # Mock Data
   MOCK_data = """<!DOCTYPE html>
@@ -241,15 +241,263 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
 </html>
 """
 
+  MOCK_data_voicemail = """<!DOCTYPE html>
+  <html lang="nl">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="favicon.ico">
+      <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+      <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png"/>
+      <link rel="icon" href="apple-touch-icon.png" type="image/png"/>
+
+      <title>Choozze Me</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Custom styles for this template -->
+      <link href="css/navbar-static-top.css" rel="stylesheet">
+
+      <!-- Custom styles for this template -->
+      <link href="css/signin.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    </head>
+
+    <body>
+
+      <div>&nbsp;</div>
+
+      <div class="container">
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
+          <h1>Voicemail</h1>
+          <p>Jouw Choozze nummer: +31600000005</p>
+          <p>
+
+          <p>Jouw voicemail is actief.</p>
+
+  <form class="form-inline" role="form" name="vmsettings" method="post" action="https://choozze.me/voicemail.php">
+    <input type="hidden" name="action" value="vmsettings" />
+
+    <div class="row"><div class="col-xs-6 col-md-4">
+      Voicemail activeren
+    </div><div class="col-xs-12 col-md-8">
+      <label><input type="checkbox" name="vmactive" ></label>
+    </div></div>
+
+    <div class="row"><div class="col-xs-6 col-md-4">
+      Voicemail PIN-code (4 cijfers)
+      <label class="sr-only" for="InputPIN">PIN-code</label>
+    </div><div class="col-xs-12 col-md-8">
+      <input type="text" class="form-control" name="vmpin" id="vmpin" placeholder="Pincode" value="9999">
+    </div></div>
+
+    <div class="row"><div class="col-xs-6 col-md-4">
+      Voicemails naar email versturen
+      <label class="sr-only" for="InputEmail">Email address</label>
+    </div><div class="col-xs-12 col-md-8">
+      <input type="email" class="form-control" name="vmemail" id="vmemail" placeholder="Voicemail per email sturen aan" >
+    </div></div>
+    <button type="submit" class="btn btn-success">Instellen</button>
+  </form>
+
+        </div>
+
+      </div> <!-- /container -->
+
+
+          <!-- Static navbar -->
+        <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="https://choozze.me/"><img src="https://choozze.me/img/choozze-logobutton-sm.png" alt="Mijn Choozze"></a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="https://choozze.me/voicemail.php">Voicemail</a></li>
+                <li><a href="https://choozze.me/forward.php">Doorschakelen</a></li>
+                <li><a href="https://choozze.me/apn.php">Internet</a></li>
+                <li><a href="https://choozze.me/simcard.php">Simkaart</a></li>
+                <li><a href="https://choozze.me/invoices.php">Facturen</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://choozze.me/contact.php">Contact</a></li>
+                <li class="active"><form id="logout" name="logout" method="post" action="https://choozze.me/login.php"><input type="hidden" name="action" value="logout" /></form><a href="#" onClick="document.getElementById('logout').submit()">Logout</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div><!--/.container-fluid -->
+        </div>
+      <!-- Bootstrap core JavaScript
+      ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+          $(document).ready(function(){
+              if (typeof state !== 'undefined') {
+                  hideInvoices();
+
+                  $('#invoices-toggle').click(function (e) {
+                      e.preventDefault();
+                      toggleInvoiceView();
+                  });
+
+              }
+          });
+      </script>
+    </body>
+  </html>"""
+
+  MOCK_data_callforward = """<!DOCTYPE html>
+  <html lang="nl">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="favicon.ico">
+      <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+      <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png"/>
+      <link rel="icon" href="apple-touch-icon.png" type="image/png"/>
+
+      <title>Choozze Me</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+
+      <!-- Custom styles for this template -->
+      <link href="css/navbar-static-top.css" rel="stylesheet">
+
+      <!-- Custom styles for this template -->
+      <link href="css/signin.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+    </head>
+
+    <body>
+
+      <div>&nbsp;</div>
+
+      <div class="container">
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron">
+          <h1>Doorschakelen</h1>
+          <p>Jouw Choozze nummer: +31600000004</p>
+          <p>
+
+  <p>Om doorschakelingen in te stellen, voer het bestemmingsnummer in en klik op 'Instellen'. Om ze te deactiveren, wis het nummer uit het gewenste veld en klik op 'Instellen'<br/></p>
+
+  <form class="form-inline" role="form" name="cfsettings" method="post" action="https://choozze.me/forward.php">
+    <input type="hidden" name="action" value="cfsettings" />
+
+    <div class="row"><div class="col-xs-6 col-md-4">
+      Onmiddelijk doorschakelen (*21)
+      <label class="sr-only" for="InputCFIM">Onmiddelijk doorschakelen</label>
+    </div><div class="col-xs-12 col-md-8">
+      <input type="text" class="form-control" name="cfim" id="cfim" placeholder="Doorschakelen naar" value="234353453">
+    </div></div>
+
+    <div class="row"><div class="col-xs-6 col-md-4">
+      Doorschakelen bij bezet/geen antwoord (*61)
+      <label class="sr-only" for="InputCFIM">Vertraagd doorschakelen</label>
+    </div><div class="col-xs-12 col-md-8">
+  <input type='text' class='form-control' name='cfbs' id='cfbs' placeholder='Doorschakelen naar' value='85632432'>  </div></div>
+
+    <button type="submit" class="btn btn-success">Instellen</button>
+
+  <p><br/>Let op: de kosten gemaakt bij het doorschakelen vallen buiten de bundel en zullen in rekening worden gebracht.</p>
+  </form>
+
+        </div>
+
+      </div> <!-- /container -->
+
+
+          <!-- Static navbar -->
+        <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="https://choozze.me/"><img src="https://choozze.me/img/choozze-logobutton-sm.png" alt="Mijn Choozze"></a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="https://choozze.me/voicemail.php">Voicemail</a></li>
+                <li><a href="https://choozze.me/forward.php">Doorschakelen</a></li>
+                <li><a href="https://choozze.me/apn.php">Internet</a></li>
+                <li><a href="https://choozze.me/simcard.php">Simkaart</a></li>
+                <li><a href="https://choozze.me/invoices.php">Facturen</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://choozze.me/contact.php">Contact</a></li>
+                <li class="active"><form id="logout" name="logout" method="post" action="https://choozze.me/login.php"><input type="hidden" name="action" value="logout" /></form><a href="#" onClick="document.getElementById('logout').submit()">Logout</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div><!--/.container-fluid -->
+        </div>
+      <!-- Bootstrap core JavaScript
+      ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+          $(document).ready(function(){
+              if (typeof state !== 'undefined') {
+                  hideInvoices();
+
+                  $('#invoices-toggle').click(function (e) {
+                      e.preventDefault();
+                      toggleInvoiceView();
+                  });
+
+              }
+          });
+      </script>
+    </body>
+  </html>"""
+
   def __init__(self, username = None ,password = None):
     self.encryption = Encryption()
     if JOLLA:
       pyotherside.send('notification','Encryption is ' + ('enabled' if self.encryption.isEnabled() else 'disabled'))
 
-    self.portal_url     = 'https://choozze.me'
-    self.login_page     = 'login.php'
-    self.voicemail_page = 'voicemail.php'
-    self.forward_page   = 'forward.php'
+    self.portal_url       = 'https://choozze.me'
+    self.login_page       = 'login.php'
+    self.voicemail_page   = 'voicemail.php'
+    self.callforward_page = 'forward.php'
 
     self.login_cookie = None
     self.login_ok = False
@@ -265,11 +513,21 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
         'call_usage': {'total': None, 'used': None, 'free': None},
         'data_usage': {'total': None, 'used': None, 'free': None},
         'days_usage': {'total': None, 'used': None, 'free': None},
+
+        'voicemail_active': None,
+        'voicemail_pin': '',
+        'voicemail_email': '',
+
+        'callforward_active': None,
+        'callforward_direct': '',
+        'callforward_busy': '',
     }
 
+    # Login regexes
     self.valid_email_regex = re.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
     self.regex_logged_in   = re.compile('Welkom Choozzer!')
 
+    # Account regexes
     self.regex_phonenumber = re.compile('<p>.*nummer:\s(?P<phonenumber>\+\d{11})\s*<\/p>')
     self.regex_mobile_plan = re.compile('<p>.*gekozen voor\s*(?P<mobileplan>[^</]+)<\/p>')
     self.regex_extra_costs = re.compile('<p>Buitenbundelkosten:\s(?P<currentcy>.*)(?P<extra_costs>\d+,\d+)\s*<\/p>')
@@ -277,6 +535,15 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
     self.regex_call_usage  = re.compile('(?P<totalcall>\d+) belminuten voor \S+ \((?P<usedcall>\d+)%[^</]+')
     self.regex_data_usage  = re.compile('(?P<totaldata>\d+)(?P<dataunit>[(M|G)B]+) mobiel internet \S+ \((?P<useddata>\d+)%[^</]+')
     self.internetdata_unit = 1000
+
+    # Voicemail regexes
+    self.regex_voicemail_active = re.compile('Jouw voicemail is\s?(?P<active>[^\s]+)? actief')
+    self.regex_voicemail_pin    = re.compile('placeholder="Pincode".*value="(?P<pincode>\d{4})"')
+    self.regex_voicemail_email  = re.compile('type="email".*value="(?P<voicemailemail>[^"]+)"')
+
+    # Callforward regexes
+    self.regex_callforward_direct = re.compile('type=("|\')?text("|\')?.*((name|id)=("|\')?cfim("|\')?){1,2}.*value=("|\')?(?P<direct>[^("|\')?]+)("|\')?')
+    self.regex_callforward_busy   = re.compile('type=("|\')?text("|\')?.*((name|id)=("|\')?cfbs("|\')?){1,2}.*value=("|\')?(?P<busy>[^("|\')?]+)("|\')?')
 
     self.__load_application_data()
 
@@ -294,7 +561,8 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
   def __load_application_data(self):
     try:
       with open(ChoozzeScraper.data_file, mode='rb') as data_file:
-        self.application_data = json.loads(self.encryption.decrypt(data_file.read()))
+        old_application_data = json.loads(self.encryption.decrypt(data_file.read()))
+        self.application_data = dict(list(self.application_data.items()) + list(old_application_data.items()))
     except Exception as e:
       if JOLLA:
         pyotherside.send('notification','Error loading data excetpion: ' + str(e))
@@ -390,11 +658,47 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
     self.application_data['last_update'] = int(time.time())
     self.__save_application_data()
 
+  def __parse_voicemail_data(self,html):
+    match = self.regex_voicemail_active.search(html)
+    if match:
+      self.application_data['voicemail_active'] = match.group('active') is None or (match.group('active').strip()).lower() != 'niet'
+
+    match = self.regex_voicemail_pin.search(html)
+    self.application_data['voicemail_pin'] = ''
+    if match and match.group('pincode') is not None:
+      self.application_data['voicemail_pin'] = match.group('pincode')
+
+    match = self.regex_voicemail_email.search(html)
+    self.application_data['voicemail_email'] = ''
+    if match and match.group('voicemailemail') is not None:
+      self.application_data['voicemail_email'] = match.group('voicemailemail')
+
+    self.application_data['last_update'] = int(time.time())
+    self.__save_application_data()
+
+  def __parse_callforward_data(self,html):
+    match = self.regex_callforward_direct.search(html)
+    self.application_data['callforward_direct'] = ''
+    if match:
+      self.application_data['callforward_direct'] = match.group('direct')
+
+    match = self.regex_callforward_busy.search(html)
+    self.application_data['callforward_busy'] = ''
+    if match:
+      self.application_data['callforward_busy'] = match.group('busy')
+
+    self.application_data['callforward_active'] = ( self.application_data['callforward_direct'] != '' or \
+                                                    self.application_data['callforward_busy'] != '')
+
+    self.application_data['last_update'] = int(time.time())
+    self.__save_application_data()
+
   def __update_data(self):
-    return_value = 0
+    return_value = 1
     account_return = self.__update_account_data()
-    return self.__update_account_data()
-      #or self.__update_voicemail_data()
+    voicemail_return = self.__update_voicemail_data()
+    callforward_return = self.__update_callforward_data()
+    return return_value
 
   def __update_account_data(self,force_update = False):
     return self.__get_account_data(force_update)
@@ -402,6 +706,7 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
   def __get_account_data(self,force_update = False):
     if self.isLoggedIn():
       if not force_update and int(time.time()) - self.application_data['last_update'] < ChoozzeScraper.data_update_timeout:
+        print('Use force update to update account data')
         return 0
       try:
         html = ''
@@ -421,17 +726,120 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
 
     return -99
 
-  def __update_voicemail_data(self):
-    return self.__get_voicemail_data()
+  def __update_voicemail_data(self,force_update = False):
+    return self.__get_voicemail_data(force_update)
 
-  def __get_voicemail_data(self):
+  def __get_voicemail_data(self,force_update = False):
     if self.isLoggedIn():
+      if not force_update and int(time.time()) - self.application_data['last_update'] < ChoozzeScraper.data_update_timeout:
+        print('Use force update to update voicemail data')
+        return 0
       try:
-        #response = self.opener.open(self.portal_url + '' + self.voicemaile_age)
-        #self.__parse_voicemail_data(response.read().decode('utf-8'))
-        return True
+        html = ''
+        if ChoozzeScraper.MOCK:
+          html = ChoozzeScraper.MOCK_data_voicemail
+        else:
+          response = self.opener.open(self.portal_url + '/' + self.voicemail_page)
+          html = response.read().decode('utf-8')
+
+        if ChoozzeScraper.DEBUG:
+          print('Got voicemail data')
+          print(html)
+        self.__parse_voicemail_data(html)
+        return 1
       except:
-        pass
+        return -1
+
+    return -99
+
+  def __save_voicemail_settings(self):
+    post_data = {'action': 'vmsettings',
+                 'vmpin': self.application_data['voicemail_pin'],
+                 'vmemail': self.application_data['voicemail_email'] }
+
+    if self.application_data['voicemail_active']:
+      post_data['vmactive'] = 'on'
+
+    data = urllib.parse.urlencode(post_data).encode('utf-8')
+
+    if ChoozzeScraper.DEBUG:
+      print('Start posting voicemail data')
+      print(data)
+    html = ''
+    try:
+      if ChoozzeScraper.MOCK:
+        html = ChoozzeScraper.MOCK_data_voicemail
+      else:
+        response = self.opener.open(self.portal_url + '/' + self.voicemail_page, data)
+        html = response.read().decode('utf-8')
+
+      if ChoozzeScraper.DEBUG:
+        print('Got voicemail data after updateing')
+        print(html)
+
+      self.__parse_voicemail_data(html)
+      return True
+
+    except:
+      if ChoozzeScraper.DEBUG:
+        print('Save voicemail settings something went wrong')
+
+    return False
+
+  def __update_callforward_data(self,force_update = False):
+    return self.__get_callforward_data(force_update)
+
+  def __get_callforward_data(self,force_update = False):
+    if self.isLoggedIn():
+      if not force_update and int(time.time()) - self.application_data['last_update'] < ChoozzeScraper.data_update_timeout:
+        print('Use force update to update callforward data')
+        return 0
+      try:
+        html = ''
+        if ChoozzeScraper.MOCK:
+          html = ChoozzeScraper.MOCK_data_callforward
+        else:
+          response = self.opener.open(self.portal_url + '/' + self.callforward_page)
+          html = response.read().decode('utf-8')
+
+        if ChoozzeScraper.DEBUG:
+          print('Got callforward data')
+          print(html)
+        self.__parse_callforward_data(html)
+        return 1
+      except:
+        return -1
+
+    return -99
+
+  def __save_callforward_settings(self):
+    post_data = {'action': 'cfsettings',
+                 'cfim': self.application_data['callforward_direct'],
+                 'cfbs': self.application_data['callforward_busy'] }
+
+    data = urllib.parse.urlencode(post_data).encode('utf-8')
+
+    if ChoozzeScraper.DEBUG:
+      print('Start posting callforward data')
+      print(data)
+    html = ''
+    try:
+      if ChoozzeScraper.MOCK:
+        html = ChoozzeScraper.MOCK_data_callforward
+      else:
+        response = self.opener.open(self.portal_url + '/' + self.callforward_page, data)
+        html = response.read().decode('utf-8')
+
+      if ChoozzeScraper.DEBUG:
+        print('Got callforward data after updateing')
+        print(html)
+
+      self.__parse_callforward_data(html)
+      return True
+
+    except:
+      if ChoozzeScraper.DEBUG:
+        print('Save callforward settings something went wrong')
 
     return False
 
@@ -510,7 +918,15 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
     if self.login_ok:
       if ChoozzeScraper.DEBUG:
         print('Start login methode login success')
+        print('Loading account data')
       self.__parse_account_data(html)
+      if ChoozzeScraper.DEBUG:
+        print('Loading voicemail data')
+      self.__update_voicemail_data(True)
+      if ChoozzeScraper.DEBUG:
+        print('Loading callforward data')
+      self.__update_callforward_data(True)
+      print(self.application_data)
 
     return self.isLoggedIn()
 
@@ -523,10 +939,35 @@ Let op: Verbruiksgegevens worden met enige vertraging weergegeven en dienen ter 
 
     return self.application_data
 
-  def get_voicemail_status(self):
-    pass
+  def set_voicemail_settings(self, active = None, pin = None, email = None):
+    self.__set_voicemail_active(active)
+    self.__set_voicemail_pin(pin)
+    self.__set_voicemail_email(email)
+    return self.__save_voicemail_settings()
 
-  def set_voicemail_status(self):
-    pass
+  def __set_voicemail_active(self,active):
+    self.application_data['voicemail_active'] = active == True
+
+  def __set_voicemail_pin(self,pin):
+    if re.match('^[0-9]{4}$',str(pin)):
+      self.application_data['voicemail_pin'] = pin
+
+  def __set_voicemail_email(self,email):
+    if self.valid_email_regex.match(email):
+      self.application_data['voicemail_email'] = email
+
+  def set_callforward_settings(self, direct = None, busy = None):
+    self.__set_callforward_direct(direct)
+    self.__set_callforward_busy(busy)
+    return self.__save_callforward_settings()
+
+  def __set_callforward_direct(self,direct):
+    if direct is not None:
+      self.application_data['callforward_direct'] = direct
+
+  def __set_callforward_busy(self,busy):
+    if busy is not None:
+      self.application_data['callforward_busy'] = busy
+
 
 choozzescraper = ChoozzeScraper()

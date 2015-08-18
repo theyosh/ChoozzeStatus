@@ -46,7 +46,7 @@ CoverBackground {
         id: coverAction
         iconBackground: false
         CoverAction {
-            iconSource: 'image://theme/icon-cover-next'
+            iconSource: Qt.resolvedUrl('../images/butterfly-sm.png')
             onTriggered: force_update_account_data()
         }
     }

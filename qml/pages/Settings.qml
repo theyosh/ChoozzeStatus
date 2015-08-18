@@ -56,8 +56,8 @@ Dialog {
 
     onDone: {
         if (result == DialogResult.Accepted) {
-            choozzeData.username = usernameField.text
-            choozzeData.password = passwordField.text
+            choozzeMainApp.choozzeData.username = usernameField.text
+            choozzeMainApp.choozzeData.password = passwordField.text
             choozzeMainApp.updateMainData()
             choozzeMainApp.notificationMessage(qsTr('Credentials are saved'))
         }
@@ -70,8 +70,7 @@ Dialog {
                 loader.running = true
                 call('ChoozzeScraper.choozzescraper.set_credentials', [usernameField.text,passwordField.text],function(result){
                     if (choozzeMainApp.__debug){
-                      console.log('login result test 2: ' + result);
-                      console.log('Login successfull!')
+                      console.log('login result: ' + result);
                     }
                     loader.running = false
                     if (result) {

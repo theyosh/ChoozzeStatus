@@ -71,6 +71,14 @@ ApplicationWindow
                 property int used: 0
                 property int free: 0
             }
+
+            property bool voicemail_active
+            property string voicemail_pin
+            property string voicemail_email
+
+            property bool callforward_active
+            property string callforward_direct
+            property string callforward_busy
         }
 
     property bool dataLoading: false
@@ -90,6 +98,10 @@ ApplicationWindow
     function updateMainData(force_update) {
         force_update = force_update ? force_update : false;
         python.updateData(force_update)
+    }
+
+    function saveMobileOptions() {
+        python.saveOptions()
     }
 
     // Check if the needed credentials are availabe. If not, go to the settings screen
@@ -262,10 +274,38 @@ ApplicationWindow
                 choozzeDataObject.days_usage.used = result['days_usage']['used']
                 choozzeDataObject.days_usage.free = result['days_usage']['free']
 
+                choozzeDataObject.voicemail_active = result['voicemail_active']
+                choozzeDataObject.voicemail_pin    = result['voicemail_pin']
+                choozzeDataObject.voicemail_email  = result['voicemail_email']
+
+                choozzeDataObject.callforward_active = result['callforward_active']
+                choozzeDataObject.callforward_direct = result['callforward_direct']
+                choozzeDataObject.callforward_busy   = result['callforward_busy']
+
                 choozzeDataObject.last_update = new Date(result['last_update'] * 1000)
                 choozzeMainApp.dataLoading = false
 
                 notificationMessage(qsTr('Update account data'))
+            });
+        }
+
+        function saveOptions() {
+            choozzeMainApp.dataLoading = true
+
+            call('ChoozzeScraper.choozzescraper.set_voicemail_settings', [choozzeDataObject.voicemail_active,choozzeDataObject.voicemail_pin,choozzeDataObject.voicemail_email],function(result){
+                if (choozzeMainApp.__debug){
+                  console.log('Saved voicemail settings: ' + result);
+                }
+                notificationMessage(qsTr('Updated voicemail settings'))
+                updateData();
+            });
+
+            call('ChoozzeScraper.choozzescraper.set_callforward_settings', [choozzeDataObject.callforward_direct,choozzeDataObject.callforward_busy],function(result){
+                if (choozzeMainApp.__debug){
+                  console.log('Saved callforward settings: ' + result);
+                }
+                notificationMessage(qsTr('Updated call forwarding settings'))
+                updateData();
             });
         }
     }

@@ -48,6 +48,12 @@ Page {
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
         anchors.fill: parent
+        contentHeight: column.height + Theme.paddingLarge
+
+        // Why is this necessary?
+        contentWidth: parent.width
+
+        VerticalScrollDecorator {}
 
         // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
@@ -76,16 +82,11 @@ Page {
             }
         }
 
-        // Tell SilicaFlickable the height of its content.
-        contentHeight: column.height
-
         // Place our content in a Column.  The PageHeader is always placed at the top
         // of the page, followed by our content.
         Column {
             id: column
-
             width: homepage.width
-            height: homepage.height
 
             PageHeader {
                 title: qsTr('Choozze account status')
@@ -95,6 +96,7 @@ Page {
                 id: body
                 text: qsTr('Here you can see your account status of your mobile plan at Choozze.nu')
                 wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignHCenter
                 anchors {
                     left: parent.left
                     right: parent.right
@@ -137,7 +139,7 @@ Page {
                 id: additionalCostsField
                 placeholderText: qsTr('Loading...')
                 text: choozzeMainApp.choozzeData.mobileextracosts
-                label: qsTr('Extra costs')
+                label: qsTr('Additional costs')
                 readOnly: true
                 labelVisible: true
                 anchors {
