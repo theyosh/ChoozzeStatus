@@ -8,15 +8,15 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Mon Aug 18 2015 TheYOSH <OpenRepos@theyosh.nl> 0.0.2-1
-- Added voicemail controll
-- Added call forwarding controll
+* Mon Aug 18 2015 TheYOSH <OpenRepos@theyosh.nl> 0.2-1
+- Added voicemail control
+- Added call forwarding control
 - Fixed some UI issues
 - Updated cover action icon
 - Fix encryption decrypt when no encryption modules available
 - Dropped Python3-devel package dependency
 
-* Mon Aug 17 2015 TheYOSH <OpenRepos@theyosh.nl> 0.0.1-1
+* Mon Aug 17 2015 TheYOSH <OpenRepos@theyosh.nl> 0.1-1
 - initial version
 
 
