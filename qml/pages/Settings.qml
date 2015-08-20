@@ -28,6 +28,10 @@ Dialog {
             text: choozzeMainApp.choozzeData.username
             focus: true
             EnterKey.onClicked: passwordField.focus = true;
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
         }
 
         TextField {
@@ -39,6 +43,10 @@ Dialog {
             placeholderText: qsTr('Enter Choozze.nu password')
             text: choozzeMainApp.choozzeData.password
             EnterKey.onClicked: testConnectionButton.focus = true
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
         }
 
         Button {
@@ -48,8 +56,8 @@ Dialog {
            anchors {
                left: parent.left
                right: parent.right
-               leftMargin: Theme.paddingSmall
-               rightMargin: Theme.paddingSmall
+               leftMargin: Theme.paddingLarge
+               rightMargin: Theme.paddingLarge
            }
         }
     }
@@ -64,22 +72,22 @@ Dialog {
     }
 
     Python {
-            id: python
+        id: python
 
-            function checkCredentials() {
-                loader.running = true
-                call('ChoozzeScraper.choozzescraper.set_credentials', [usernameField.text,passwordField.text],function(result){
-                    if (choozzeMainApp.__debug){
-                      console.log('login result: ' + result);
-                    }
-                    loader.running = false
-                    if (result) {
-                        dialog.canAccept = true
-                    } else {
-                        choozzeMainApp.notificationMessage(qsTr('Credentials are not correct'))
-                    }
-                    return result
-                });
-            }
+        function checkCredentials() {
+            loader.running = true
+            call('ChoozzeScraper.choozzescraper.set_credentials', [usernameField.text,passwordField.text],function(result){
+                if (choozzeMainApp.__debug){
+                  console.log('login result: ' + result);
+                }
+                loader.running = false
+                if (result) {
+                    dialog.canAccept = true
+                } else {
+                    choozzeMainApp.notificationMessage(qsTr('Credentials are not correct'))
+                }
+                return result
+            });
         }
+    }
 }

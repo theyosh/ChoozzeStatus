@@ -8,7 +8,15 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Mon Aug 18 2015 TheYOSH <OpenRepos@theyosh.nl> 0.2-1
+* Wed Aug 19 2015 TheYOSH <OpenRepos@theyosh.nl> 0.3-1
+- Rewritten a lot of python code. Reduced a lot
+- Split up encryption and mock data in seperated files
+- Fixed session timeout
+- Updated regex parsers for data.
+- Tuned the UI
+- Added version number in about page
+
+* Tue Aug 18 2015 TheYOSH <OpenRepos@theyosh.nl> 0.2-1
 - Added voicemail control
 - Added call forwarding control
 - Fixed some UI issues

@@ -56,14 +56,12 @@ Page {
 
             Label {
                 id: header
-                text: qsTr('Choozze.nu mobile plan status')
-                wrapMode: Text.WordWrap
+                text: qsTr('Choozze.nu mobile plan status') + ' v' + choozzeMainApp.version
+                horizontalAlignment: Text.AlignHCenter
                 font.bold: true
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
 
@@ -82,8 +80,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
         }

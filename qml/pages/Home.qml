@@ -100,8 +100,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingMedium
-                    rightMargin: Theme.paddingMedium
                 }
             }
 
@@ -115,8 +113,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
 
@@ -130,8 +126,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
 
@@ -145,8 +139,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
 
@@ -159,8 +151,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
 
@@ -173,8 +163,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
 
@@ -187,8 +175,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
 
@@ -201,8 +187,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
 
@@ -216,8 +200,6 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.paddingSmall
-                    rightMargin: Theme.paddingSmall
                 }
             }
         }

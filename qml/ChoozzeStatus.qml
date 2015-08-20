@@ -83,6 +83,7 @@ ApplicationWindow
 
     property bool dataLoading: false
     property bool __debug: false
+    property string version: '0.3-1'
 
     id: choozzeMainApp
     initialPage: Component { Home {} }
@@ -249,7 +250,7 @@ ApplicationWindow
             force_update = force_update ? force_update : false;
             choozzeMainApp.dataLoading = force_update
 
-            call('ChoozzeScraper.choozzescraper.get_account_status', [force_update],function(result){
+            call('ChoozzeScraper.choozzescraper.get_all_data', [force_update],function(result){
                 if (choozzeMainApp.__debug){
                   console.log('Got account data: (' +  choozzeMainApp.dataLoading + ')');
                 }

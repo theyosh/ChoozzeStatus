@@ -93,10 +93,6 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Here you can see your account status of your mobile plan at Choozze.nu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -140,6 +136,10 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
         <source>Additional costs</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Here you can see your account status of your mobile plan at Choozze.nu</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Options</name>
@@ -160,15 +160,7 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enter voicemail pincode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Voicemail email address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter voicemail email address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -192,19 +184,15 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enter direct forwarding number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Busy forwarding number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enter busy forwarding number</source>
+        <source>Call forwarding active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Call forwarding active</source>
+        <source>Not possible when voicemail enabled</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

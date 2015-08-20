@@ -27,7 +27,11 @@ OTHER_FILES += qml/ChoozzeStatus.qml \
     qml/cover/Cover.qml \
     qml/pages/Settings.qml \
     qml/python/ChoozzeScraper.py \
-    qml/pages/Options.qml
+    qml/pages/Options.qml \
+    qml/python/Encryption.py \
+    qml/python/MockData.py \
+    qml/images/butterfly-couple.png \
+    qml/images/butterfly-sm.png
 
 # to disable building translations every time, comment out the
 # following CONFIG line
