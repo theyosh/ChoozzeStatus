@@ -129,7 +129,7 @@ Dialog {
                 text: choozzeMainApp.choozzeData.callforward_direct
                 /*validator: RegExpValidator { regExp: /^[0-9]{4}$/ }*/
                 color: errorHighlight? "red" : Theme.primaryColor
-                EnterKey.onClicked: voicemailEmail.focus = true;
+                EnterKey.onClicked: callforwardingBusy.focus = true;
                 anchors {
                     left: parent.left
                     right: parent.right
@@ -144,7 +144,6 @@ Dialog {
                 label: qsTr('Busy forwarding number')
                 placeholderText: label
                 text: !voicemailActiveSwitch.checked ? choozzeMainApp.choozzeData.callforward_busy : qsTr('Not possible when voicemail enabled')
-                /*text: choozzeMainApp.choozzeData.callforward_busy*/
                 readOnly: voicemailActiveSwitch.checked
                 /*validator: RegExpValidator { regExp: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/ } */
                 color: errorHighlight? "red" : Theme.primaryColor

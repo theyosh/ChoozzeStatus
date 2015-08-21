@@ -32,7 +32,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 CoverBackground {
-    id: cover
+    id: coverPage
     CoverPlaceholder {
         anchors.fill: parent
         icon.source: Qt.resolvedUrl('../images/butterfly-couple.png')
@@ -70,7 +70,7 @@ CoverBackground {
             id: callusageBar
             minimumValue: 0
             maximumValue: 100
-            value: (choozzeMainApp.choozzeData.call_usage.used / choozzeMainApp.choozzeData.call_usage.total ) * 100;
+            value: choozzeMainApp.choozzeData.call_usage.percentage
             label: qsTr('Call: %L1 out of %L2').arg(choozzeMainApp.choozzeData.call_usage.used).arg(choozzeMainApp.choozzeData.call_usage.total)
             anchors {
                 left: parent.left
@@ -84,10 +84,8 @@ CoverBackground {
             id: smsusageBar
             minimumValue: 0
             maximumValue: 100
-
-            value: (choozzeMainApp.choozzeData.sms_usage.used / choozzeMainApp.choozzeData.sms_usage.total ) * 100;
+            value: choozzeMainApp.choozzeData.sms_usage.percentage
             label: qsTr('SMS: %L1 out of %L2').arg(choozzeMainApp.choozzeData.sms_usage.used).arg(choozzeMainApp.choozzeData.sms_usage.total)
-
             anchors {
                 left: parent.left
                 right: parent.right
@@ -100,10 +98,8 @@ CoverBackground {
             id: datausageBar
             minimumValue: 0
             maximumValue: 100
-
-            value: (choozzeMainApp.choozzeData.data_usage.used / choozzeMainApp.choozzeData.data_usage.total ) * 100;
+            value: choozzeMainApp.choozzeData.data_usage.percentage
             label: qsTr('Inet: %1 out of %2').arg(choozzeMainApp.byteSize(choozzeMainApp.choozzeData.data_usage.used)).arg(choozzeMainApp.byteSize(choozzeMainApp.choozzeData.data_usage.total))
-
             anchors {
                 left: parent.left
                 right: parent.right

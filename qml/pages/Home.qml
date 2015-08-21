@@ -33,7 +33,7 @@ import Sailfish.Silica 1.0
 import io.thp.pyotherside 1.4
 
 Page {
-    id: homepage
+    id: homePage
 
     function force_update_account_data() {
         choozzeMainApp.updateMainData(true)
@@ -86,7 +86,7 @@ Page {
         // of the page, followed by our content.
         Column {
             id: column
-            width: homepage.width
+            width: parent.width
 
             PageHeader {
                 title: qsTr('Choozze account status')
@@ -146,7 +146,7 @@ Page {
                 id: callusageBar
                 minimumValue: 0
                 maximumValue: 100
-                value: (choozzeMainApp.choozzeData.call_usage.used / choozzeMainApp.choozzeData.call_usage.total ) * 100;
+                value: choozzeMainApp.choozzeData.call_usage.percentage
                 label: qsTr('Call usage: %L1 out of %L2').arg(choozzeMainApp.choozzeData.call_usage.used).arg(choozzeMainApp.choozzeData.call_usage.total)
                 anchors {
                     left: parent.left
@@ -158,7 +158,7 @@ Page {
                 id: smsusageBar
                 minimumValue: 0
                 maximumValue: 100
-                value: (choozzeMainApp.choozzeData.sms_usage.used / choozzeMainApp.choozzeData.sms_usage.total ) * 100;
+                value: choozzeMainApp.choozzeData.sms_usage.percentage
                 label: qsTr('SMS usage: %L1 out of %L2').arg(choozzeMainApp.choozzeData.sms_usage.used).arg(choozzeMainApp.choozzeData.sms_usage.total)
                 anchors {
                     left: parent.left
@@ -170,7 +170,7 @@ Page {
                 id: datausageBar
                 minimumValue: 0
                 maximumValue: 100
-                value: (choozzeMainApp.choozzeData.data_usage.used / choozzeMainApp.choozzeData.data_usage.total ) * 100;
+                value: choozzeMainApp.choozzeData.data_usage.percentage
                 label: qsTr('Internet usage: %1 out of %2').arg(choozzeMainApp.byteSize(choozzeMainApp.choozzeData.data_usage.used)).arg(choozzeMainApp.byteSize(choozzeMainApp.choozzeData.data_usage.total))
                 anchors {
                     left: parent.left
@@ -182,7 +182,7 @@ Page {
                 id: daysausageBar
                 minimumValue: 0
                 maximumValue: 100
-                value: (choozzeMainApp.choozzeData.days_usage.used / choozzeMainApp.choozzeData.days_usage.total ) * 100;
+                value: choozzeMainApp.choozzeData.days_usage.percentage
                 label: qsTr('Days usage: %L1 out of %L2').arg(choozzeMainApp.choozzeData.days_usage.used).arg(choozzeMainApp.choozzeData.days_usage.total)
                 anchors {
                     left: parent.left

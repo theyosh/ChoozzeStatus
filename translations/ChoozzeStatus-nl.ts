@@ -42,10 +42,6 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
 <context>
     <name>ChoozzeStatus</name>
     <message>
-        <source>Notification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Update account data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -138,22 +134,6 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Call usage: %L1 out of %L2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SMS usage: %L1 out of %L2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Internet usage: %1 out of %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Days usage: %L1 out of %L2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Last update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -171,6 +151,22 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
     </message>
     <message>
         <source>Here you can see your account status of your mobile plan at Choozze.nu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Call usage: %L1 out of %L2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS usage: %L1 out of %L2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internet usage: %1 out of %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Days usage: %L1 out of %L2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

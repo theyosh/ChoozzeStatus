@@ -27,8 +27,8 @@ if MOCKDATA:
 
 class ChoozzeScraper:
 
-  data_update_timeout = 43200 # 12 Hours timeout
   update_timeout = 3600 # 1 Hours timeout
+  data_update_timeout = 4 * update_timeout # 4 Hours timeout
   data_file = '.ChoozzeScraper.data.bin' # Hidden data file
 
   def __init__(self, username = None ,password = None):

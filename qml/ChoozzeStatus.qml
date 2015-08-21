@@ -52,24 +52,28 @@ ApplicationWindow
                 property int total: 0
                 property int used: 0
                 property int free: 0
+                property int percentage: 0
             }
 
             property variant sms_usage: QtObject {
                 property int total: 0
                 property int used: 0
                 property int free: 0
+                property int percentage: 0
             }
 
             property variant data_usage: QtObject {
                 property int total: 0
                 property int used: 0
                 property int free: 0
+                property int percentage: 0
             }
 
             property variant days_usage: QtObject {
                 property int total: 0
                 property int used: 0
                 property int free: 0
+                property int percentage: 0
             }
 
             property bool voicemail_active
@@ -83,7 +87,7 @@ ApplicationWindow
 
     property bool dataLoading: false
     property bool __debug: false
-    property string version: '0.3-1'
+    property string version: '0.4-1'
 
     id: choozzeMainApp
     initialPage: Component { Home {} }
@@ -138,26 +142,26 @@ ApplicationWindow
         }
 
         Rectangle {
-            width: notificationPlaceHolder.width
-            height: notificationPlaceHolder.height
+            width: parent.width
+            height: parent.height
             color: Theme.highlightColor
             opacity: 0.4
             anchors {
-                top: notificationPlaceHolder.top
-                left: notificationPlaceHolder.left
+                top: parent.top
+                left: parent.left
             }
         }
         Label {
             id: notificationText
-            text: qsTr("Notification")
+            text: ''
             wrapMode: Text.WordWrap
             font.pixelSize: Theme.fontSizeSmall
             horizontalAlignment: Text.AlignHCenter
-            width: notificationPlaceHolder.width
-            height: notificationPlaceHolder.height
+            width: parent.width
+            height: parent.height
             anchors {
-                top: notificationPlaceHolder.top
-                left: notificationPlaceHolder.left
+                top: parent.top
+                left: parent.left
                 leftMargin: Theme.paddingSmall
                 rightMargin: Theme.paddingSmall
             }
@@ -255,25 +259,29 @@ ApplicationWindow
                   console.log('Got account data: (' +  choozzeMainApp.dataLoading + ')');
                 }
 
-                choozzeDataObject.mobilenumber = result['mobile_number']
-                choozzeDataObject.mobileplan = result['mobile_plan']
-                choozzeDataObject.mobileextracosts = result['extra_costs']
+                choozzeDataObject.mobilenumber = result['mobile_number'];
+                choozzeDataObject.mobileplan = result['mobile_plan'];
+                choozzeDataObject.mobileextracosts = result['extra_costs'];
 
-                choozzeDataObject.call_usage.total = result['call_usage']['total']
-                choozzeDataObject.call_usage.used = result['call_usage']['used']
-                choozzeDataObject.call_usage.free = result['call_usage']['free']
+                choozzeDataObject.call_usage.total = result['call_usage']['total'];
+                choozzeDataObject.call_usage.used = result['call_usage']['used'];
+                choozzeDataObject.call_usage.free = result['call_usage']['free'];
+                choozzeDataObject.call_usage.percentage = (choozzeDataObject.call_usage.used / choozzeDataObject.call_usage.total ) * 100;
 
                 choozzeDataObject.sms_usage.total = result['sms_usage']['total']
                 choozzeDataObject.sms_usage.used = result['sms_usage']['used']
                 choozzeDataObject.sms_usage.free = result['sms_usage']['free']
+                choozzeDataObject.sms_usage.percentage = (choozzeDataObject.sms_usage.used / choozzeDataObject.sms_usage.total ) * 100;
 
                 choozzeDataObject.data_usage.total = result['data_usage']['total']
                 choozzeDataObject.data_usage.used = result['data_usage']['used']
                 choozzeDataObject.data_usage.free = result['data_usage']['free']
+                choozzeDataObject.data_usage.percentage = (choozzeDataObject.data_usage.used / choozzeDataObject.data_usage.total ) * 100;
 
                 choozzeDataObject.days_usage.total = result['days_usage']['total']
                 choozzeDataObject.days_usage.used = result['days_usage']['used']
                 choozzeDataObject.days_usage.free = result['days_usage']['free']
+                choozzeDataObject.days_usage.percentage = (choozzeDataObject.days_usage.used / choozzeDataObject.days_usage.total ) * 100;
 
                 choozzeDataObject.voicemail_active = result['voicemail_active']
                 choozzeDataObject.voicemail_pin    = result['voicemail_pin']

@@ -66,8 +66,8 @@ Dialog {
         if (result == DialogResult.Accepted) {
             choozzeMainApp.choozzeData.username = usernameField.text
             choozzeMainApp.choozzeData.password = passwordField.text
-            choozzeMainApp.updateMainData()
             choozzeMainApp.notificationMessage(qsTr('Credentials are saved'))
+            choozzeMainApp.updateMainData()
         }
     }
 
