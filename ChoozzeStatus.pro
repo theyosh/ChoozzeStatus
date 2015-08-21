@@ -17,7 +17,6 @@ CONFIG += sailfishapp
 SOURCES += src/ChoozzeStatus.cpp
 
 OTHER_FILES += qml/ChoozzeStatus.qml \
-    rpm/ChoozzeStatus.changes.in \
     rpm/ChoozzeStatus.spec \
     rpm/ChoozzeStatus.yaml \
     translations/*.ts \
@@ -31,7 +30,8 @@ OTHER_FILES += qml/ChoozzeStatus.qml \
     qml/python/Encryption.py \
     qml/python/MockData.py \
     qml/images/butterfly-couple.png \
-    qml/images/butterfly-sm.png
+    qml/images/butterfly-sm.png \
+    rpm/ChoozzeStatus.changes
 
 # to disable building translations every time, comment out the
 # following CONFIG line

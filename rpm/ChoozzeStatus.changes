@@ -8,7 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Fri Aug 20 2015 TheYOSH <OpenRepos@theyosh.nl> 0.4-1
+* Fri Aug 21 2015 TheYOSH <OpenRepos@theyosh.nl> 0.4-2
+- Removed unused image
+- Fixed changelog
+
+* Fri Aug 21 2015 TheYOSH <OpenRepos@theyosh.nl> 0.4-1
 - Fixed CPU hog bug when coverpage is active
 - Reduced data update time to 4 hours
 - Cleanup files during build process
