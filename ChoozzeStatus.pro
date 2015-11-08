@@ -31,7 +31,9 @@ OTHER_FILES += qml/ChoozzeStatus.qml \
     qml/python/MockData.py \
     qml/images/butterfly-couple.png \
     qml/images/butterfly-sm.png \
-    rpm/ChoozzeStatus.changes
+    rpm/ChoozzeStatus.changes \
+    qml/pages/Invoices.qml \
+    qml/pages/History.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

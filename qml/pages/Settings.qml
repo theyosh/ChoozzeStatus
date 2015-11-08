@@ -4,7 +4,6 @@ import io.thp.pyotherside 1.4
 
 Dialog {
     id: dialog
-    canAccept: false
 
     BusyIndicator {
         id: loader
@@ -42,32 +41,44 @@ Dialog {
             label: qsTr('Password')
             placeholderText: qsTr('Enter Choozze.nu password')
             text: choozzeMainApp.choozzeData.password
-            EnterKey.onClicked: testConnectionButton.focus = true
+            EnterKey.onClicked: updateTimeout.focus = true
             anchors {
                 left: parent.left
                 right: parent.right
             }
         }
 
-        Button {
-           id: testConnectionButton
-           text: qsTr('Test credentials')
-           onClicked: python.checkCredentials()
-           anchors {
-               left: parent.left
-               right: parent.right
-               leftMargin: Theme.paddingLarge
-               rightMargin: Theme.paddingLarge
-           }
+        TextField {
+            id: updateTimeout
+            width: parent.width
+            inputMethodHints: Qt.ImhNoPredictiveText
+            label: qsTr('Update timeout')
+            placeholderText: qsTr('Enter the timeout in hours for updating')
+            text: choozzeMainApp.choozzeData.data_update_timeout
+            validator: IntValidator { bottom: 2; top: 24 }
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
         }
     }
 
     onDone: {
-        if (result == DialogResult.Accepted) {
+        if (result === DialogResult.Accepted) {
+            var update = (choozzeMainApp.choozzeData.username !== usernameField.text || choozzeMainApp.choozzeData.password !== passwordField.text)
+
             choozzeMainApp.choozzeData.username = usernameField.text
             choozzeMainApp.choozzeData.password = passwordField.text
-            choozzeMainApp.notificationMessage(qsTr('Credentials are saved'))
-            choozzeMainApp.updateMainData()
+            choozzeMainApp.choozzeData.data_update_timeout = updateTimeout.text
+
+            python.setDataTimeout()
+
+            if ( update === true) {
+                if (choozzeMainApp.__debug){
+                  console.log('New credentials entered... check them');
+                }
+                python.checkCredentials()
+            }
         }
     }
 
@@ -81,12 +92,21 @@ Dialog {
                   console.log('login result: ' + result);
                 }
                 loader.running = false
+
                 if (result) {
-                    dialog.canAccept = true
+                    choozzeMainApp.notificationMessage(qsTr('Credentials are correct'))
+                    choozzeMainApp.updateMainData()
                 } else {
                     choozzeMainApp.notificationMessage(qsTr('Credentials are not correct'))
                 }
+
                 return result
+            });
+        }
+
+        function setDataTimeout() {
+            call('ChoozzeScraper.choozzescraper.set_data_update_timeout', [updateTimeout.text],function(result){
+
             });
         }
     }

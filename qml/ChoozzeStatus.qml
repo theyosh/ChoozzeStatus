@@ -42,6 +42,8 @@ ApplicationWindow
             property string username
             property string password
 
+            property int data_update_timeout: 4
+
             property string mobilenumber
             property string mobileplan
             property string mobileextracosts
@@ -87,7 +89,7 @@ ApplicationWindow
 
     property bool dataLoading: false
     property bool __debug: false
-    property string version: '0.4-1'
+    property string version: '0.5'
 
     id: choozzeMainApp
     initialPage: Component { Home {} }
@@ -291,6 +293,8 @@ ApplicationWindow
                 choozzeDataObject.callforward_direct = result['callforward_direct']
                 choozzeDataObject.callforward_busy   = result['callforward_busy']
 
+                choozzeDataObject.data_update_timeout = result['data_update_timeout'] / 3600
+
                 choozzeDataObject.last_update = new Date(result['last_update'] * 1000)
                 choozzeMainApp.dataLoading = false
 
@@ -306,7 +310,6 @@ ApplicationWindow
                   console.log('Saved voicemail settings: ' + result);
                 }
                 notificationMessage(qsTr('Updated voicemail settings'))
-                updateData();
             });
 
             call('ChoozzeScraper.choozzescraper.set_callforward_settings', [choozzeDataObject.callforward_direct,choozzeDataObject.callforward_busy],function(result){
@@ -314,7 +317,6 @@ ApplicationWindow
                   console.log('Saved callforward settings: ' + result);
                 }
                 notificationMessage(qsTr('Updated call forwarding settings'))
-                updateData();
             });
         }
     }

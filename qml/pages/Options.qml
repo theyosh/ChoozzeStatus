@@ -18,6 +18,9 @@ Dialog {
         /* https://lists.sailfishos.org/pipermail/devel/2014-May/004136.html */
         contentHeight: optionsList.y + optionsList.height
 
+        // Why is this necessary?
+        contentWidth: parent.width
+
         VerticalScrollDecorator {}
 
         Column {

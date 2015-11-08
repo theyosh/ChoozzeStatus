@@ -11,33 +11,6 @@
         <source>Choozze.nu mobile plan status</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>With this application you can see your mobile plan status at the operator. It uses web scraping technologie to get the data.
-Currently it allows you to:
-1. See your status:
-- Call usage
-- SMS usage
-- Data usage
-2. Change voicemail settings
-3. Change callforwarding settings
-
-The mobile plan data is updated once every 12 hours.
-
-This application is not created by Choozze. The used images are copyrighted by Choozze
-Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>AboutPage</name>
-    <message>
-        <source>Nested Page</source>
-        <translation type="obsolete">Unterseite</translation>
-    </message>
-    <message>
-        <source>Item</source>
-        <translation type="obsolete">Element</translation>
-    </message>
 </context>
 <context>
     <name>ChoozzeStatus</name>
@@ -82,25 +55,14 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
     </message>
 </context>
 <context>
-    <name>CoverPage</name>
+    <name>History</name>
     <message>
-        <source>My Cover</source>
-        <translation type="vanished">Mein Cover</translation>
-    </message>
-</context>
-<context>
-    <name>FirstPage</name>
-    <message>
-        <source>Show Page 2</source>
-        <translation type="vanished">Zur Seite 2</translation>
+        <source>History</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>UI Template</source>
-        <translation type="vanished">UI-Vorlage</translation>
-    </message>
-    <message>
-        <source>Hello Sailors</source>
-        <translation type="vanished">Hallo Matrosen</translation>
+        <source>Not implemented yet!!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -169,6 +131,21 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
         <source>Days usage: %L1 out of %L2</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Invoices</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Invoices</name>
+    <message>
+        <source>Invoices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not implemented yet!!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Options</name>
@@ -226,17 +203,6 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
     </message>
 </context>
 <context>
-    <name>SecondPage</name>
-    <message>
-        <source>Nested Page</source>
-        <translation type="vanished">Unterseite</translation>
-    </message>
-    <message>
-        <source>Item</source>
-        <translation type="vanished">Element</translation>
-    </message>
-</context>
-<context>
     <name>Settings</name>
     <message>
         <source>Username</source>
@@ -263,15 +229,19 @@ Choozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Test credentials</source>
+        <source>Update timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter the timeout in hours for updating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credentials are correct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Credentials are not correct</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credentials are saved</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

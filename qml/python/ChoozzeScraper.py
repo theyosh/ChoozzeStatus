@@ -28,8 +28,8 @@ if MOCKDATA:
 class ChoozzeScraper:
 
   update_timeout = 3600 # 1 Hours timeout
-  data_update_timeout = 4 * update_timeout # 4 Hours timeout
   data_file = '.ChoozzeScraper.data.bin' # Hidden data file
+  history_file = '.ChoozzeScraper.history.bin' # Hidden data file
 
   def __init__(self, username = None ,password = None):
     try:
@@ -51,6 +51,7 @@ class ChoozzeScraper:
 
     self.application_data = {
         'last_update': 0,
+        'data_update_timeout': int(4 * 3600),
         'username': None,
         'password': None,
         'mobile_number': None,
@@ -69,6 +70,8 @@ class ChoozzeScraper:
         'callforward_direct': '',
         'callforward_busy': '',
     }
+
+    self.history_data = {}
 
     # Login regexes
     self.login_detect_regex = re.compile('<input type=("|\')?hidden("|\')? name=("|\')?action("|\')? value=("|\')?login("|\')? />')
@@ -94,6 +97,7 @@ class ChoozzeScraper:
     self.regex_callforward_busy   = re.compile('type=("|\')?text("|\')?.*((name|id)=("|\')?cfbs("|\')?){1,2}.*value=("|\')?(?P<busy>[^("|\')?]+)("|\')?')
 
     self.__load_application_data()
+    self.__load_application_history()
 
     if username is not None:
       self.set_username(username)
@@ -110,12 +114,12 @@ class ChoozzeScraper:
 
   def __notify_message(self,type,message):
     if JOLLA:
-      pyotherside.send(type,message)
-    self.__print_debug(type + ' || ' + message)
+      pyotherside.send(type,str(message))
 
   def __print_debug(self,message):
     if DEBUG:
-      print('DEBUG: ' + message)
+      self.__notify_message('notification',str(message))
+      print('DEBUG: ' + str(message))
 
   def __load_application_data(self):
     try:
@@ -132,6 +136,33 @@ class ChoozzeScraper:
     except Exception as e:
       self.__notify_message('notification','Error saving data exception: ' + str(e))
 
+  def __load_application_history(self):
+    try:
+      with open(ChoozzeScraper.history_file, mode='rb') as data_file:
+        old_history_data = json.loads(self.encryption.decrypt(data_file.read()))
+        self.history_data = dict(list(self.history_data.items()) + list(old_history_data.items()))
+    except Exception as e:
+      self.__notify_message('notification','Error loading history exception: ' + str(e))
+
+  def __save_application_history(self):
+    try:
+      with open(ChoozzeScraper.history_file, mode='wb') as data_file:
+        data_file.write(self.encryption.encrypt(json.dumps(self.history_data)))
+    except Exception as e:
+      self.__notify_message('notification','Error saving history exception: ' + str(e))
+
+  def __add_history(self):
+      data_fields = {'data_update_timeout', 'mobile_plan','extra_costs','sms_usage','call_usage','data_usage','days_usage','voicemail_active','callforward_active'}
+
+      history = {}
+      for data_field in data_fields:
+          history[data_field] = self.application_data[data_field]
+
+      self.history_data[str(self.application_data['last_update'])] = history
+      self.__print_debug('Added data to history')
+      self.__print_debug(self.history_data)
+      self.__save_application_history()
+
   def __init_online_session(self):
     self.login_cookie = http.cookiejar.CookieJar()
 
@@ -147,8 +178,9 @@ class ChoozzeScraper:
     #    1. Forced
     #    2. Postdata
     #    3. Outdated
-    self.__print_debug('Get online data for page: ' + str(page) + ' -> Forced: ' + str(force_update) + ', Data: ' + str(data is not None) + ', Outdated: ' + str(((int(time.time()) - self.application_data['last_update']) > ChoozzeScraper.data_update_timeout)) + ', ' + str(ChoozzeScraper.data_update_timeout - (int(time.time()) - self.application_data['last_update'])) + ' seconds left')
-    if force_update or (data is not None) or ((int(time.time()) - self.application_data['last_update']) > ChoozzeScraper.data_update_timeout):
+    last_update = int(time.time()) - int(self.application_data['last_update'])
+    self.__print_debug('Get online data for page: ' + str(page) + ' -> Forced: ' + str(force_update) + ', Data: ' + str(data is not None) + ', Outdated: ' + str(last_update > self.application_data['data_update_timeout']) + ', ' + str( int(self.application_data['data_update_timeout']) - (int(time.time()) - self.application_data['last_update'])) + ' seconds left')
+    if force_update or (data is not None) or ( last_update > int(self.application_data['data_update_timeout'])):
       pages = ['account','voicemail','callforward']
       if data is not None:
           pages = [page]
@@ -159,6 +191,7 @@ class ChoozzeScraper:
         self.__print_debug('Downloaded online data for page ' + page)
 
       self.application_data['last_update'] = int(time.time())
+      self.__add_history();
       self.__save_application_data()
 
   def __process_online_data(self,page,data = None):
@@ -320,6 +353,11 @@ class ChoozzeScraper:
   def set_password(self,password):
     if password is not None and password != '':
       self.application_data['password'] = password
+      self.__save_application_data()
+
+  def set_data_update_timeout(self,timeout):
+    if timeout is not None and timeout != '' and int(timeout) >= 2 and int(timeout) <= 24:
+      self.application_data['data_update_timeout'] = int(timeout) * 3600
       self.__save_application_data()
 
   def set_credentials(self,username,password):

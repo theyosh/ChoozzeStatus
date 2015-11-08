@@ -66,6 +66,10 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl('History.qml'))
             }
             MenuItem {
+                text: qsTr('Invoices')
+                onClicked: pageStack.push(Qt.resolvedUrl('Invoices.qml'))
+            }
+            MenuItem {
                 text: qsTr('Options')
                 onClicked: pageStack.push(Qt.resolvedUrl('Options.qml'))
             }

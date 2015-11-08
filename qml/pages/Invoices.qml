@@ -32,7 +32,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 Page {
-    id: aboutPage
+    id: invoicePage
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
@@ -51,30 +51,18 @@ Page {
             width: parent.width
 
             PageHeader {
-                title: qsTr('About')
-            }
-
-            Label {
-                id: header
-                text: qsTr('Choozze.nu mobile plan status') + ' v' + choozzeMainApp.version
-                horizontalAlignment: Text.AlignHCenter
-                font.bold: true
+                title: qsTr('Invoices')
                 anchors {
                     left: parent.left
                     right: parent.right
+                    leftMargin: Theme.paddingLarge
+                    rightMargin: Theme.paddingLarge
                 }
-            }
-
-            Image {
-                id: choozzeButterfly
-                source: Qt.resolvedUrl('../images/butterfly-sm.png')
-                width: 66
-                x: (parent.width - choozzeButterfly.width) / 2
             }
 
             Label {
                 id: body
-                text: qsTr('With this application you can see your mobile plan status at the operator. It uses web scraping technologie to get the data.\nCurrently it allows you to:\n1. See your status:\n- Call usage\n- SMS usage\n- Data usage\n2. Change voicemail settings\n3. Change callforwarding settings\n\nThe mobile plan data is updated once every ' + choozzeMainApp.choozzeData.data_update_timeout + ' hours.\n\nThis application is not created by Choozze. The used images are copyrighted by Choozze\nChoozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015')
+                text: qsTr('Not implemented yet!!')
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
                 anchors {

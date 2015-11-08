@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Nov 8 2015 TheYOSH <OpenRepos@theyosh.nl> 0.5
+- Save data to phone for historical overview
+- Updated settings page in order to specify the update timeout
+- Added invoice page. Not working yet.
+
 * Fri Aug 21 2015 TheYOSH <OpenRepos@theyosh.nl> 0.4-2
 - Removed unused image
 - Fixed changelog
