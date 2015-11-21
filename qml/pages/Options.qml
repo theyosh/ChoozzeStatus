@@ -5,13 +5,13 @@ import io.thp.pyotherside 1.4
 Dialog {
     id: optionsPage
     height: optionsList.height + Theme.paddingLarge
-
+/*
     BusyIndicator {
         id: loader
         anchors.centerIn: parent
         running: false
     }
-
+*/
     SilicaFlickable {
         width: parent.width
         height: parent.height
@@ -159,7 +159,7 @@ Dialog {
     }
 
     onDone: {
-        if (result == DialogResult.Accepted) {
+        if (result === DialogResult.Accepted) {
             choozzeMainApp.choozzeData.voicemail_active = voicemailActiveSwitch.checked
             choozzeMainApp.choozzeData.voicemail_pin = voicemailPin.text
             choozzeMainApp.choozzeData.voicemail_email = voicemailEmail.text
@@ -180,6 +180,5 @@ Dialog {
             choozzeMainApp.saveMobileOptions()
             choozzeMainApp.notificationMessage(qsTr('Mobile options are saved'))
         }
-
     }
 }

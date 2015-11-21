@@ -4,12 +4,7 @@ import io.thp.pyotherside 1.4
 
 Dialog {
     id: dialog
-
-    BusyIndicator {
-        id: loader
-        anchors.centerIn: parent
-        running: false
-    }
+    canAccept: usernameField.text !== '' && passwordField.text !== ''
 
     Column {
         width: parent.width
@@ -26,7 +21,8 @@ Dialog {
             placeholderText: qsTr('Enter Choozze.nu username')
             text: choozzeMainApp.choozzeData.username
             focus: true
-            EnterKey.onClicked: passwordField.focus = true;
+            EnterKey.onClicked: passwordField.focus = true
+            validator: RegExpValidator { regExp: /^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$/gi }
             anchors {
                 left: parent.left
                 right: parent.right
@@ -61,53 +57,30 @@ Dialog {
                 right: parent.right
             }
         }
+
+        Label {
+            text: "\n"
+            width: parent.width
+        }
+
+        Button {
+            id: resetSettingsButton
+            text: qsTr('Reset settings')
+            width: parent.width
+            onClicked: resetSettings()
+        }
+    }
+
+    function resetSettings() {
+        usernameField.text = ''
+        passwordField.text = ''
+        updateTimeout.text = 4
+        choozzeMainApp.resetSettings()
     }
 
     onDone: {
         if (result === DialogResult.Accepted) {
-            var update = (choozzeMainApp.choozzeData.username !== usernameField.text || choozzeMainApp.choozzeData.password !== passwordField.text)
-
-            choozzeMainApp.choozzeData.username = usernameField.text
-            choozzeMainApp.choozzeData.password = passwordField.text
-            choozzeMainApp.choozzeData.data_update_timeout = updateTimeout.text
-
-            python.setDataTimeout()
-
-            if ( update === true) {
-                if (choozzeMainApp.__debug){
-                  console.log('New credentials entered... check them');
-                }
-                python.checkCredentials()
-            }
-        }
-    }
-
-    Python {
-        id: python
-
-        function checkCredentials() {
-            loader.running = true
-            call('ChoozzeScraper.choozzescraper.set_credentials', [usernameField.text,passwordField.text],function(result){
-                if (choozzeMainApp.__debug){
-                  console.log('login result: ' + result);
-                }
-                loader.running = false
-
-                if (result) {
-                    choozzeMainApp.notificationMessage(qsTr('Credentials are correct'))
-                    choozzeMainApp.updateMainData()
-                } else {
-                    choozzeMainApp.notificationMessage(qsTr('Credentials are not correct'))
-                }
-
-                return result
-            });
-        }
-
-        function setDataTimeout() {
-            call('ChoozzeScraper.choozzescraper.set_data_update_timeout', [updateTimeout.text],function(result){
-
-            });
+            choozzeMainApp.saveSettings(usernameField.text,passwordField.text,updateTimeout.text);
         }
     }
 }

@@ -37,55 +37,55 @@ import 'cover'
 ApplicationWindow
 {
     property variant choozzeData: QtObject {
-            id: choozzeDataObject
+        id: choozzeDataObject
 
-            property string username
-            property string password
+        property string username
+        property string password
 
-            property int data_update_timeout: 4
+        property int data_update_timeout: 4
 
-            property string mobilenumber
-            property string mobileplan
-            property string mobileextracosts
+        property string mobilenumber
+        property string mobileplan
+        property string mobileextracosts
 
-            property variant last_update: new Date()
+        property variant last_update: new Date()
 
-            property variant call_usage: QtObject {
-                property int total: 0
-                property int used: 0
-                property int free: 0
-                property int percentage: 0
-            }
-
-            property variant sms_usage: QtObject {
-                property int total: 0
-                property int used: 0
-                property int free: 0
-                property int percentage: 0
-            }
-
-            property variant data_usage: QtObject {
-                property int total: 0
-                property int used: 0
-                property int free: 0
-                property int percentage: 0
-            }
-
-            property variant days_usage: QtObject {
-                property int total: 0
-                property int used: 0
-                property int free: 0
-                property int percentage: 0
-            }
-
-            property bool voicemail_active
-            property string voicemail_pin
-            property string voicemail_email
-
-            property bool callforward_active
-            property string callforward_direct
-            property string callforward_busy
+        property variant call_usage: QtObject {
+            property int total: 0
+            property int used: 0
+            property int free: 0
+            property int percentage: 0
         }
+
+        property variant sms_usage: QtObject {
+            property int total: 0
+            property int used: 0
+            property int free: 0
+            property int percentage: 0
+        }
+
+        property variant data_usage: QtObject {
+            property int total: 0
+            property int used: 0
+            property int free: 0
+            property int percentage: 0
+        }
+
+        property variant days_usage: QtObject {
+            property int total: 0
+            property int used: 0
+            property int free: 0
+            property int percentage: 0
+        }
+
+        property bool voicemail_active
+        property string voicemail_pin
+        property string voicemail_email
+
+        property bool callforward_active
+        property string callforward_direct
+        property string callforward_busy
+    }
 
     property bool dataLoading: false
     property bool __debug: false
@@ -97,11 +97,25 @@ ApplicationWindow
 
     // Function for showing a nice notification on top of the screen. Animation is about 6 seconds
     function notificationMessage(message) {
+        if (choozzeMainApp.__debug){
+          console.log('notificationMessage: ' + message);
+        }
         notificationText.text = message
         notificationAnimation.running = true
     }
 
+    // Start loading animation
+    function startLoader() {
+        choozzeMainApp.dataLoading = true
+    }
+
+    // Stop loading animation
+    function stopLoader() {
+        choozzeMainApp.dataLoading = false
+    }
+
     // Function for updating the data from other pages
+
     function updateMainData(force_update) {
         force_update = force_update ? force_update : false;
         python.updateData(force_update)
@@ -112,14 +126,19 @@ ApplicationWindow
     }
 
     // Check if the needed credentials are availabe. If not, go to the settings screen
-    function force_settings() {
-        if (!(choozzeMainApp.choozzeData.username !== '' && choozzeMainApp.choozzeData.password !== '')) {
-            // No credentials, go to the settings screen
-            if (choozzeMainApp.pageStack.busy) {
-                choozzeMainApp.pageStack.completeAnimation();
-            }
-            choozzeMainApp.pageStack.push(Qt.resolvedUrl('pages/Settings.qml'));
+    function force_settings_page() {
+        if (choozzeMainApp.pageStack.busy) {
+            choozzeMainApp.pageStack.completeAnimation();
         }
+        choozzeMainApp.pageStack.push(Qt.resolvedUrl('pages/Settings.qml'));
+    }
+
+    function saveSettings(username,password,data_update_timeout) {
+        return python.saveSettings(username,password,data_update_timeout);
+    }
+
+    function resetSettings() {
+        return python.resetSettings();
     }
 
     // Function for human readable bite sizes
@@ -177,30 +196,37 @@ ApplicationWindow
             PropertyAnimation { id: animationStay; target: notificationPlaceHolder; property: 'opacity'; to: 1; duration: 2000 }
             PropertyAnimation { id: animationOut;  target: notificationPlaceHolder; property: 'opacity'; to: 0; duration: 2000 }
         }
-     }
+    }
 
     Python {
         id: python
 
         Component.onCompleted: {
+
             setHandler('update-data', function(message) {
                 if (choozzeMainApp.__debug){
                     console.log('Got a data update from Python module: ' + message)
                 }
                 updateData()
             });
+
             setHandler('notification', function(message) {
                 if (choozzeMainApp.__debug){
                     console.log('Got a notification from Python module: ' + message)
                 }
                 notificationMessage(message)
             });
+
             addImportPath(Qt.resolvedUrl('python'));
+
             /* Module should auto start scraper daemon, and that should sent a signal*/
             if (choozzeMainApp.__debug){
                 console.log('Start deamon!');
             }
+
             importModule('ChoozzeScraper', function() {
+                startLoader();
+
                 if (choozzeMainApp.__debug){
                   console.log('Get credentials!');
                 }
@@ -230,20 +256,25 @@ ApplicationWindow
                         if (choozzeMainApp.__debug){
                             console.log('Yup, and now update data');
                         }
-                        updateData();
+                        updateData(true);
                     } else {
                         // Invalid credentials
+                        if (choozzeMainApp.__debug){
+                            console.log('Force settings window due to invalid credentials');
+                        }
                         notificationMessage(qsTr('The loaded credentials are invalid'))
-                        force_settings()
+                        force_settings_page();
                     }
                 } else {
                     if (choozzeMainApp.__debug){
                         console.log('Force settings window');
                     }
                     notificationMessage(qsTr('No credentials available'))
-                    force_settings()
+                    force_settings_page()
                 }
+                //stopLoader();
             });
+
         }
 
         // Function to check if we are loggedin at the Mobile provider
@@ -251,10 +282,14 @@ ApplicationWindow
             return call_sync('ChoozzeScraper.choozzescraper.isLoggedIn', []);
         }
 
+        function checkCredentials(username,password) {
+            return call_sync('ChoozzeScraper.choozzescraper.set_credentials', [username,password]);
+        }
+
         // Get the latest data from your Mobile operator
         function updateData(force_update) {
+            startLoader();
             force_update = force_update ? force_update : false;
-            choozzeMainApp.dataLoading = force_update
 
             call('ChoozzeScraper.choozzescraper.get_all_data', [force_update],function(result){
                 if (choozzeMainApp.__debug){
@@ -296,15 +331,14 @@ ApplicationWindow
                 choozzeDataObject.data_update_timeout = result['data_update_timeout'] / 3600
 
                 choozzeDataObject.last_update = new Date(result['last_update'] * 1000)
-                choozzeMainApp.dataLoading = false
 
                 notificationMessage(qsTr('Update account data'))
+
+                stopLoader();
             });
         }
 
         function saveOptions() {
-            choozzeMainApp.dataLoading = true
-
             call('ChoozzeScraper.choozzescraper.set_voicemail_settings', [choozzeDataObject.voicemail_active,choozzeDataObject.voicemail_pin,choozzeDataObject.voicemail_email],function(result){
                 if (choozzeMainApp.__debug){
                   console.log('Saved voicemail settings: ' + result);
@@ -318,6 +352,91 @@ ApplicationWindow
                 }
                 notificationMessage(qsTr('Updated call forwarding settings'))
             });
+        }
+
+        function saveSettings(username,password,data_update_timeout) {
+            if (choozzeMainApp.__debug){
+              console.log('Start saving settings');
+            }
+            startLoader();
+
+            var login = true;
+
+            if (username !== choozzeData.username || password !== choozzeData.password) {
+                if (choozzeMainApp.__debug){
+                  console.log('Check new credentials...');
+                }
+                if (checkCredentials(username,password)) {
+                    notificationMessage(qsTr('The new credentials are saved'))
+                    choozzeData.username = username;
+                    choozzeData.password = password;
+                    stopLoader();
+                    updateData(true);
+
+                } else {
+                    login = false;
+                    stopLoader();
+                    notificationMessage(qsTr('The new credentials are not valid'))
+                }
+            }
+
+            if (data_update_timeout !== choozzeData.data_update_timeout) {
+                call('ChoozzeScraper.choozzescraper.set_data_update_timeout', [data_update_timeout],function(result){
+                    if (choozzeMainApp.__debug){
+                      console.log('Update date update timeout: ' + result);
+                    }
+                });
+            }
+            return login;
+        }
+
+        function resetSettings() {
+            call('ChoozzeScraper.choozzescraper.reset_settings', [],function(result){
+                if (choozzeMainApp.__debug){
+                  console.log('Reset settings: ' + result);
+                }
+                if (result === true) {
+                    choozzeDataObject.username = ''
+                    choozzeDataObject.password = ''
+
+                    choozzeDataObject.mobilenumber = ''
+                    choozzeDataObject.mobileplan = ''
+                    choozzeDataObject.mobileextracosts = ''
+
+                    choozzeDataObject.call_usage.total = 0
+                    choozzeDataObject.call_usage.used = 0
+                    choozzeDataObject.call_usage.free = 0
+                    choozzeDataObject.call_usage.percentage = 0
+
+                    choozzeDataObject.sms_usage.total = 0
+                    choozzeDataObject.sms_usage.used = 0
+                    choozzeDataObject.sms_usage.free = 0
+                    choozzeDataObject.sms_usage.percentage = 0
+
+                    choozzeDataObject.data_usage.total = 0
+                    choozzeDataObject.data_usage.used = 0
+                    choozzeDataObject.data_usage.free = 0
+                    choozzeDataObject.data_usage.percentage = 0
+
+                    choozzeDataObject.days_usage.total = 0
+                    choozzeDataObject.days_usage.used = 0
+                    choozzeDataObject.days_usage.free = 0
+                    choozzeDataObject.days_usage.percentage = 0
+
+                    choozzeDataObject.voicemail_active = ''
+                    choozzeDataObject.voicemail_pin    = ''
+                    choozzeDataObject.voicemail_email  = ''
+
+                    choozzeDataObject.callforward_active = ''
+                    choozzeDataObject.callforward_direct = ''
+                    choozzeDataObject.callforward_busy   = ''
+
+                    choozzeDataObject.data_update_timeout = 4
+
+                    choozzeDataObject.last_update = new Date()
+                 }
+            });
+
         }
     }
 }

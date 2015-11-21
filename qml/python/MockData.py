@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import time
 from random import randint
 
 def random(max):
   return (randint(1, 100) / 100) * max
 
 def getpage(page):
+  # Fake HTTP traffic duration for testing animation
+  time.sleep(random(5))
   if 'account' == page or 'login' == page:
     return data_account
   if 'voicemail' == page:

@@ -34,6 +34,14 @@
         <source>Updated call forwarding settings</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The new credentials are saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The new credentials are not valid</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Cover</name>
@@ -237,11 +245,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Credentials are correct</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credentials are not correct</source>
+        <source>Reset settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

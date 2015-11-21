@@ -49,29 +49,7 @@ class ChoozzeScraper:
     self.login_cookie = None
     self.login_ok = False
 
-    self.application_data = {
-        'last_update': 0,
-        'data_update_timeout': int(4 * 3600),
-        'username': None,
-        'password': None,
-        'mobile_number': None,
-        'mobile_plan': None,
-        'extra_costs': None,
-        'sms_usage':  {'total': None, 'used': None, 'free': None},
-        'call_usage': {'total': None, 'used': None, 'free': None},
-        'data_usage': {'total': None, 'used': None, 'free': None},
-        'days_usage': {'total': None, 'used': None, 'free': None},
-
-        'voicemail_active': None,
-        'voicemail_pin': '',
-        'voicemail_email': '',
-
-        'callforward_active': None,
-        'callforward_direct': '',
-        'callforward_busy': '',
-    }
-
-    self.history_data = {}
+    self.reset_settings(False)
 
     # Login regexes
     self.login_detect_regex = re.compile('<input type=("|\')?hidden("|\')? name=("|\')?action("|\')? value=("|\')?login("|\')? />')
@@ -359,6 +337,9 @@ class ChoozzeScraper:
     if timeout is not None and timeout != '' and int(timeout) >= 2 and int(timeout) <= 24:
       self.application_data['data_update_timeout'] = int(timeout) * 3600
       self.__save_application_data()
+      return True
+    else:
+      return False
 
   def set_credentials(self,username,password):
     self.set_username(username)
@@ -460,5 +441,35 @@ class ChoozzeScraper:
 
     self.__get_online_data('callforward',post_data)
     return True
+
+  def reset_settings(self, save = True):
+      self.application_data = {
+          'last_update': 0,
+          'data_update_timeout': int(4 * 3600),
+          'username': None,
+          'password': None,
+          'mobile_number': None,
+          'mobile_plan': None,
+          'extra_costs': None,
+          'sms_usage':  {'total': None, 'used': None, 'free': None},
+          'call_usage': {'total': None, 'used': None, 'free': None},
+          'data_usage': {'total': None, 'used': None, 'free': None},
+          'days_usage': {'total': None, 'used': None, 'free': None},
+
+          'voicemail_active': None,
+          'voicemail_pin': '',
+          'voicemail_email': '',
+
+          'callforward_active': None,
+          'callforward_direct': '',
+          'callforward_busy': '',
+      }
+      self.history_data = {}
+
+      if save:
+          self.__save_application_data()
+          self.__save_application_history()
+
+      return True
 
 choozzescraper = ChoozzeScraper()

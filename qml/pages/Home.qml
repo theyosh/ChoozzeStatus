@@ -34,10 +34,11 @@ import io.thp.pyotherside 1.4
 
 Page {
     id: homePage
-
+/*
     function force_update_account_data() {
         choozzeMainApp.updateMainData(true)
     }
+*/
 
     BusyIndicator {
         id: loader
@@ -82,7 +83,7 @@ Page {
         PushUpMenu {
             MenuItem {
                 text: qsTr('Force Update')
-                onClicked: force_update_account_data()
+                onClicked: choozzeMainApp.updateMainData(true)
             }
         }
 
