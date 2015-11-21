@@ -8,6 +8,16 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Nov 23 2015 TheYOSH <OpenRepos@theyosh.nl> 0.6
+- Added reset button on the settings page. This will reset all the data
+- Added red color warning when extra costs are made
+- Updated loading indicator logic
+- Updated byteSize function to support negative values
+- Fixed recursive login loop when entering invalid credentials
+- Fixed usage data is in integers
+- Rewritten debug code
+- Clean up disabled coded
+
 * Sun Nov 8 2015 TheYOSH <OpenRepos@theyosh.nl> 0.5
 - Save data to phone for historical overview
 - Updated settings page in order to specify the update timeout
