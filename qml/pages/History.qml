@@ -61,13 +61,15 @@ Page {
             }
 
             Label {
-                id: body
-                text: qsTr('Not implemented yet!!')
+                id: historyList
+                text: choozzeMainApp.choozzeData.history
                 wrapMode: Text.WordWrap
-                horizontalAlignment: Text.AlignHCenter
+                horizontalAlignment: Text.AlignJustify
                 anchors {
                     left: parent.left
                     right: parent.right
+                    leftMargin: Theme.paddingLarge
+                    rightMargin: Theme.paddingLarge
                 }
             }
         }

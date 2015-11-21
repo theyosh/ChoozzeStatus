@@ -42,6 +42,10 @@
         <source>The new credentials are not valid</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Date      ///    Call left, SMS left, Data left</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Cover</name>
@@ -66,10 +70,6 @@
     <name>History</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not implemented yet!!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

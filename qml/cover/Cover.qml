@@ -33,13 +33,13 @@ import Sailfish.Silica 1.0
 
 CoverBackground {
     id: coverPage
+    function force_update_account_data() {
+        choozzeMainApp.updateMainData(true)
+    }
+
     CoverPlaceholder {
         anchors.fill: parent
         icon.source: Qt.resolvedUrl('../images/butterfly-couple.png')
-    }
-
-    function force_update_account_data() {
-        choozzeMainApp.updateMainData(true)
     }
 
     CoverActionList {

@@ -5,13 +5,7 @@ import io.thp.pyotherside 1.4
 Dialog {
     id: optionsPage
     height: optionsList.height + Theme.paddingLarge
-/*
-    BusyIndicator {
-        id: loader
-        anchors.centerIn: parent
-        running: false
-    }
-*/
+
     SilicaFlickable {
         width: parent.width
         height: parent.height
@@ -130,7 +124,6 @@ Dialog {
                 label: qsTr('Direct forwarding number')
                 placeholderText: label
                 text: choozzeMainApp.choozzeData.callforward_direct
-                /*validator: RegExpValidator { regExp: /^[0-9]{4}$/ }*/
                 color: errorHighlight? "red" : Theme.primaryColor
                 EnterKey.onClicked: callforwardingBusy.focus = true;
                 anchors {
@@ -148,7 +141,6 @@ Dialog {
                 placeholderText: label
                 text: !voicemailActiveSwitch.checked ? choozzeMainApp.choozzeData.callforward_busy : qsTr('Not possible when voicemail enabled')
                 readOnly: voicemailActiveSwitch.checked
-                /*validator: RegExpValidator { regExp: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/ } */
                 color: errorHighlight? "red" : Theme.primaryColor
                 anchors {
                     left: parent.left

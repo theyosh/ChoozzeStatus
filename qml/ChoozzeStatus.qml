@@ -85,6 +85,8 @@ ApplicationWindow
         property bool callforward_active
         property string callforward_direct
         property string callforward_busy
+
+        property string history: 'Loading...'
     }
 
     property bool dataLoading: false
@@ -94,6 +96,12 @@ ApplicationWindow
     id: choozzeMainApp
     initialPage: Component { Home {} }
     cover: Component { Cover {} }
+
+    function debug(message) {
+        if (choozzeMainApp.__debug){
+          console.log('debug: ' + message);
+        }
+    }
 
     // Function for showing a nice notification on top of the screen. Animation is about 6 seconds
     function notificationMessage(message) {
@@ -144,12 +152,17 @@ ApplicationWindow
     // Function for human readable bite sizes
     function byteSize(bytes) {
         var untis = ['b','Kb','Mb','Gb']
+        var indicator = ''
         var counter = 0
+        if (bytes < 0) {
+            indicator = '-'
+            bytes *= -1
+        }
         while (bytes / 1000 > 1) {
             counter++
             bytes = bytes / 1000
         }
-        return bytes + '' + untis[counter]
+        return indicator + bytes + '' + untis[counter]
     }
 
     Item {
@@ -204,75 +217,52 @@ ApplicationWindow
         Component.onCompleted: {
 
             setHandler('update-data', function(message) {
-                if (choozzeMainApp.__debug){
-                    console.log('Got a data update from Python module: ' + message)
-                }
+                debug('Got a data update from Python module: ' + message)
                 updateData()
             });
 
             setHandler('notification', function(message) {
-                if (choozzeMainApp.__debug){
-                    console.log('Got a notification from Python module: ' + message)
-                }
+                debug('Got a notification from Python module: ' + message)
                 notificationMessage(message)
             });
 
             addImportPath(Qt.resolvedUrl('python'));
 
             /* Module should auto start scraper daemon, and that should sent a signal*/
-            if (choozzeMainApp.__debug){
-                console.log('Start deamon!');
-            }
+            debug('Start deamon!');
 
             importModule('ChoozzeScraper', function() {
                 startLoader();
-
-                if (choozzeMainApp.__debug){
-                  console.log('Get credentials!');
-                }
+                debug('Get credentials!');
 
                 // Here we use synchronized calls, so that we are sure to get all the data at the right time
                 var username = call_sync('ChoozzeScraper.choozzescraper.get_username',[]);
                 if (username !== undefined && username !== '') {
-                    if (choozzeMainApp.__debug){
-                      console.log('Got username: ' + username);
-                    }
+                    debug('Got username: ' + username);
                     choozzeDataObject.username = username;
                 }
 
                 var password = call_sync('ChoozzeScraper.choozzescraper.get_password',[]);
                 if (password !== undefined && password !== '') {
-                    if (choozzeMainApp.__debug){
-                      console.log('Got password: ' + password);
-                    }
+                    debug('Got password: ' + password);
                     choozzeDataObject.password = password;
                 }
 
                 if (choozzeDataObject.username !== '' && choozzeDataObject.password != '') {
-                    if (choozzeMainApp.__debug){
-                      console.log('Check if logged in already?');
-                    }
+                    debug('Check if logged in already?');
                     if (python.isLoggedIn()) {
-                        if (choozzeMainApp.__debug){
-                            console.log('Yup, and now update data');
-                        }
+                        debug('Yup, and now update data');
                         updateData(true);
                     } else {
                         // Invalid credentials
-                        if (choozzeMainApp.__debug){
-                            console.log('Force settings window due to invalid credentials');
-                        }
                         notificationMessage(qsTr('The loaded credentials are invalid'))
                         force_settings_page();
                     }
                 } else {
-                    if (choozzeMainApp.__debug){
-                        console.log('Force settings window');
-                    }
+                    debug('Force settings window');
                     notificationMessage(qsTr('No credentials available'))
                     force_settings_page()
                 }
-                //stopLoader();
             });
 
         }
@@ -292,9 +282,7 @@ ApplicationWindow
             force_update = force_update ? force_update : false;
 
             call('ChoozzeScraper.choozzescraper.get_all_data', [force_update],function(result){
-                if (choozzeMainApp.__debug){
-                  console.log('Got account data: (' +  choozzeMainApp.dataLoading + ')');
-                }
+                debug('Got account data: (' +  choozzeMainApp.dataLoading + ')');
 
                 choozzeDataObject.mobilenumber = result['mobile_number'];
                 choozzeDataObject.mobileplan = result['mobile_plan'];
@@ -332,6 +320,8 @@ ApplicationWindow
 
                 choozzeDataObject.last_update = new Date(result['last_update'] * 1000)
 
+                getHistory()
+
                 notificationMessage(qsTr('Update account data'))
 
                 stopLoader();
@@ -340,39 +330,29 @@ ApplicationWindow
 
         function saveOptions() {
             call('ChoozzeScraper.choozzescraper.set_voicemail_settings', [choozzeDataObject.voicemail_active,choozzeDataObject.voicemail_pin,choozzeDataObject.voicemail_email],function(result){
-                if (choozzeMainApp.__debug){
-                  console.log('Saved voicemail settings: ' + result);
-                }
+                debug('Saved voicemail settings: ' + result);
                 notificationMessage(qsTr('Updated voicemail settings'))
             });
 
             call('ChoozzeScraper.choozzescraper.set_callforward_settings', [choozzeDataObject.callforward_direct,choozzeDataObject.callforward_busy],function(result){
-                if (choozzeMainApp.__debug){
-                  console.log('Saved callforward settings: ' + result);
-                }
+                debug('Saved callforward settings: ' + result);
                 notificationMessage(qsTr('Updated call forwarding settings'))
             });
         }
 
         function saveSettings(username,password,data_update_timeout) {
-            if (choozzeMainApp.__debug){
-              console.log('Start saving settings');
-            }
+            debug('Start saving settings');
             startLoader();
 
             var login = true;
-
-            if (username !== choozzeData.username || password !== choozzeData.password) {
-                if (choozzeMainApp.__debug){
-                  console.log('Check new credentials...');
-                }
+            if (username !== choozzeDataObject.username || password !== choozzeDataObject.password) {
+                debug('Check new credentials...');
                 if (checkCredentials(username,password)) {
                     notificationMessage(qsTr('The new credentials are saved'))
-                    choozzeData.username = username;
-                    choozzeData.password = password;
+                    choozzeDataObject.username = username;
+                    choozzeDataObject.password = password;
                     stopLoader();
                     updateData(true);
-
                 } else {
                     login = false;
                     stopLoader();
@@ -380,21 +360,29 @@ ApplicationWindow
                 }
             }
 
-            if (data_update_timeout !== choozzeData.data_update_timeout) {
+            if (data_update_timeout !== choozzeDataObject.data_update_timeout) {
                 call('ChoozzeScraper.choozzescraper.set_data_update_timeout', [data_update_timeout],function(result){
-                    if (choozzeMainApp.__debug){
-                      console.log('Update date update timeout: ' + result);
-                    }
+                    debug('Update date update timeout: ' + result);
+                    choozzeDataObject.data_update_timeout = data_update_timeout
+                    stopLoader();
                 });
             }
             return login;
         }
 
+        function getHistory() {
+            call('ChoozzeScraper.choozzescraper.get_history', [],function(result){
+                var history = qsTr('Date      ///    Call left, SMS left, Data left') + '\n' + '================================' + '\n'
+                for (var key in result) {
+                    history = history + Qt.formatDate(new Date(result[key].last_update * 1000),'dd MMM yyyy')  + '       ///        ' + result[key].call_usage.free + ', ' + result[key].sms_usage.free + ', ' + byteSize(result[key].data_usage.free) + '\n'
+                }
+                choozzeDataObject.history = history
+            });
+        }
+
         function resetSettings() {
             call('ChoozzeScraper.choozzescraper.reset_settings', [],function(result){
-                if (choozzeMainApp.__debug){
-                  console.log('Reset settings: ' + result);
-                }
+                debug('Reset settings: ' + result);
                 if (result === true) {
                     choozzeDataObject.username = ''
                     choozzeDataObject.password = ''
@@ -433,10 +421,11 @@ ApplicationWindow
 
                     choozzeDataObject.data_update_timeout = 4
 
+                    choozzeDataObject.history = 'loading...'
+
                     choozzeDataObject.last_update = new Date()
                  }
             });
-
         }
     }
 }

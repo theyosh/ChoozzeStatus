@@ -62,6 +62,8 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
+                    leftMargin: Theme.paddingLarge
+                    rightMargin: Theme.paddingLarge
                 }
             }
 
@@ -80,6 +82,8 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
+                    leftMargin: Theme.paddingLarge
+                    rightMargin: Theme.paddingLarge
                 }
             }
         }

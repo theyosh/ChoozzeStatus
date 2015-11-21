@@ -34,11 +34,6 @@ import io.thp.pyotherside 1.4
 
 Page {
     id: homePage
-/*
-    function force_update_account_data() {
-        choozzeMainApp.updateMainData(true)
-    }
-*/
 
     BusyIndicator {
         id: loader
@@ -139,6 +134,7 @@ Page {
                 placeholderText: qsTr('Loading...')
                 text: choozzeMainApp.choozzeData.mobileextracosts
                 label: qsTr('Additional costs')
+                color: choozzeMainApp.choozzeData.mobileextracosts !== "0,00"? "red" : Theme.primaryColor
                 readOnly: true
                 labelVisible: true
                 anchors {

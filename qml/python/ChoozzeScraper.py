@@ -18,7 +18,7 @@ import math
 import time
 import json
 import threading
-from datetime import date
+from datetime import date, datetime
 
 import Encryption
 
@@ -75,6 +75,9 @@ class ChoozzeScraper:
     self.regex_callforward_busy   = re.compile('type=("|\')?text("|\')?.*((name|id)=("|\')?cfbs("|\')?){1,2}.*value=("|\')?(?P<busy>[^("|\')?]+)("|\')?')
 
     self.__load_application_data()
+
+    self.__history_fields = {'data_update_timeout', 'mobile_plan','extra_costs','sms_usage','call_usage','data_usage','days_usage','voicemail_active','callforward_active'}
+
     self.__load_application_history()
 
     if username is not None:
@@ -130,10 +133,8 @@ class ChoozzeScraper:
       self.__notify_message('notification','Error saving history exception: ' + str(e))
 
   def __add_history(self):
-      data_fields = {'data_update_timeout', 'mobile_plan','extra_costs','sms_usage','call_usage','data_usage','days_usage','voicemail_active','callforward_active'}
-
       history = {}
-      for data_field in data_fields:
+      for data_field in self.__history_fields:
           history[data_field] = self.application_data[data_field]
 
       self.history_data[str(self.application_data['last_update'])] = history
@@ -185,7 +186,7 @@ class ChoozzeScraper:
 
         response = self.opener.open(self.portal_url + '/' + self.online_pages[page],post_data)
         html = response.read().decode('utf-8')
-        if self.login_detect_regex.search(html):
+        if page != 'login' and self.login_detect_regex.search(html):
           #self.__notify_message('notification','Cookie expired, relogin for page' + page)
           if self.login():
             self.__print_debug('Recursive restart processing online data')
@@ -227,41 +228,41 @@ class ChoozzeScraper:
 
     sms_usage = self.regex_sms_usage.search(html)
     if sms_usage:
-      self.application_data['sms_usage']['total'] = float(sms_usage.group('totalsms'))
-      self.application_data['sms_usage']['used'] = self.application_data['sms_usage']['total'] * (float(sms_usage.group('usedsms')) / 100)
+      self.application_data['sms_usage']['total'] = int(sms_usage.group('totalsms'))
+      self.application_data['sms_usage']['used'] = int(float(self.application_data['sms_usage']['total']) * (float(sms_usage.group('usedsms')) / 100))
 
       # Mock data
       if MOCKDATA:
         self.application_data['sms_usage']['used'] =  MockData.random(self.application_data['sms_usage']['total'])
 
-      self.application_data['sms_usage']['free'] = self.application_data['sms_usage']['total'] - self.application_data['sms_usage']['used']
+      self.application_data['sms_usage']['free'] = int(self.application_data['sms_usage']['total']) - int(self.application_data['sms_usage']['used'])
 
     call_usage = self.regex_call_usage.search(html)
     if call_usage:
-      self.application_data['call_usage']['total'] = float(call_usage.group('totalcall'))
-      self.application_data['call_usage']['used'] = self.application_data['call_usage']['total'] * (float(call_usage.group('usedcall')) / 100)
+      self.application_data['call_usage']['total'] = int(call_usage.group('totalcall'))
+      self.application_data['call_usage']['used'] = int(float(self.application_data['call_usage']['total']) * (float(call_usage.group('usedcall')) / 100))
 
       # Mock data
       if MOCKDATA:
         self.application_data['call_usage']['used'] =  MockData.random(self.application_data['sms_usage']['total'])
 
-      self.application_data['call_usage']['free'] = self.application_data['call_usage']['total'] - self.application_data['call_usage']['used']
+      self.application_data['call_usage']['free'] = int(self.application_data['call_usage']['total']) - int(self.application_data['call_usage']['used'])
 
     data_usage = self.regex_data_usage.search(html)
     if data_usage:
-      self.application_data['data_usage']['total'] = float(data_usage.group('totaldata')) * self.__data_unit_factor(data_usage.group('dataunit'))
-      self.application_data['data_usage']['used'] = self.application_data['data_usage']['total'] * (float(data_usage.group('useddata')) / 100)
+      self.application_data['data_usage']['total'] = int(float(data_usage.group('totaldata')) * self.__data_unit_factor(data_usage.group('dataunit')))
+      self.application_data['data_usage']['used'] = int(float(self.application_data['data_usage']['total']) * (float(data_usage.group('useddata')) / 100))
 
       # Mock data
       if MOCKDATA:
         self.application_data['data_usage']['used'] =  MockData.random(self.application_data['data_usage']['total'])
 
-      self.application_data['data_usage']['free'] = self.application_data['data_usage']['total'] - self.application_data['data_usage']['used']
+      self.application_data['data_usage']['free'] = int(self.application_data['data_usage']['total']) - int(self.application_data['data_usage']['used'])
 
     now = date.today()
     self.application_data['days_usage']['total'] = (date(now.year, now.month+1, 1) - date(now.year, now.month, 1)).days
     self.application_data['days_usage']['used']  = now.day
-    self.application_data['days_usage']['free']  = self.application_data['days_usage']['total'] - self.application_data['days_usage']['used']
+    self.application_data['days_usage']['free']  = int(self.application_data['days_usage']['total']) - int(self.application_data['days_usage']['used'])
 
 
   def __parse_voicemail_data(self,html):
@@ -346,13 +347,11 @@ class ChoozzeScraper:
     self.set_password(password)
     return self.login()
 
-
   def get_username(self):
     return self.application_data['username']
 
   def get_password(self):
     return self.application_data['password']
-
 
   def login(self):
     self.__print_debug('Start login')
@@ -442,34 +441,55 @@ class ChoozzeScraper:
     self.__get_online_data('callforward',post_data)
     return True
 
+  def get_history(self,month = None,year = None):
+    self.__print_debug('Get history data')
+
+    # Create tempory history data array based on days
+    temp_data = {}
+    #self.history_data[str(self.application_data['last_update'])] = history
+
+    for history_update_date in self.history_data:
+      # Copy of the data
+      data = self.history_data[history_update_date]
+      data['last_update'] = int(history_update_date)
+
+      # Create date index in format 20151121
+      history_update_date = datetime.utcfromtimestamp(int(history_update_date)).strftime('%Y%m%d')
+
+      if history_update_date not in temp_data or temp_data[history_update_date]['last_update'] < data['last_update']:
+        temp_data[history_update_date] = data
+
+    self.__print_debug(temp_data)
+    return temp_data
+
   def reset_settings(self, save = True):
-      self.application_data = {
-          'last_update': 0,
-          'data_update_timeout': int(4 * 3600),
-          'username': None,
-          'password': None,
-          'mobile_number': None,
-          'mobile_plan': None,
-          'extra_costs': None,
-          'sms_usage':  {'total': None, 'used': None, 'free': None},
-          'call_usage': {'total': None, 'used': None, 'free': None},
-          'data_usage': {'total': None, 'used': None, 'free': None},
-          'days_usage': {'total': None, 'used': None, 'free': None},
+    self.application_data = {
+        'last_update': 0,
+        'data_update_timeout': int(4 * 3600),
+        'username': None,
+        'password': None,
+        'mobile_number': None,
+        'mobile_plan': None,
+        'extra_costs': None,
+        'sms_usage':  {'total': None, 'used': None, 'free': None},
+        'call_usage': {'total': None, 'used': None, 'free': None},
+        'data_usage': {'total': None, 'used': None, 'free': None},
+        'days_usage': {'total': None, 'used': None, 'free': None},
 
-          'voicemail_active': None,
-          'voicemail_pin': '',
-          'voicemail_email': '',
+        'voicemail_active': None,
+        'voicemail_pin': '',
+        'voicemail_email': '',
 
-          'callforward_active': None,
-          'callforward_direct': '',
-          'callforward_busy': '',
-      }
-      self.history_data = {}
+        'callforward_active': None,
+        'callforward_direct': '',
+        'callforward_busy': '',
+    }
+    self.history_data = {}
 
-      if save:
-          self.__save_application_data()
-          self.__save_application_history()
+    if save:
+      self.__save_application_data()
+      self.__save_application_history()
 
-      return True
+    return True
 
 choozzescraper = ChoozzeScraper()
