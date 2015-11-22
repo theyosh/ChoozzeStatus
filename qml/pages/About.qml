@@ -76,7 +76,7 @@ Page {
 
             Label {
                 id: body
-                text: qsTr('With this application you can see your mobile plan status at the operator. It uses web scraping technologie to get the data.\nCurrently it allows you to:\n1. See your status:\n- Call usage\n- SMS usage\n- Data usage\n2. Change voicemail settings\n3. Change callforwarding settings\n\nThe mobile plan data is updated once every ' + choozzeMainApp.choozzeData.data_update_timeout + ' hours.\n\nThis application is not created by Choozze. The used images are copyrighted by Choozze\nChoozze.nu call status app is created by TheYOSH https://theyosh.nl (c) 2015')
+                text: qsTr('With this application you can see your mobile plan status at the operator. It uses web scraping technologie to get the data.\nCurrently it allows you to:\n1. See your status:\n- Call usage\n- SMS usage\n- Data usage\n2. Change voicemail settings\n3. Change callforwarding settings\n\nThe mobile plan data is updated once every ' + choozzeMainApp.choozzeData.data_update_timeout + ' hours.\n\nThis application is not created by Choozze. The used images are copyrighted by Choozze\nChoozze.nu call status app is created by TheYOSH https://theyosh.nl\n(c) 2015')
                 wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
                 anchors {

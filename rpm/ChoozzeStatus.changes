@@ -8,7 +8,13 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* Sun Nov 23 2015 TheYOSH <OpenRepos@theyosh.nl> 0.6
+* Sun Nov 22 2015 TheYOSH <OpenRepos@theyosh.nl> 0.6.1
+- Removed not needed imports
+- Resized the loader icon
+- Fixed timestamps in Python for history data
+- Some small UI and notifications fixes
+
+* Sun Nov 22 2015 TheYOSH <OpenRepos@theyosh.nl> 0.6
 - Added reset button on the settings page. This will reset all the data
 - Added red color warning when extra costs are made
 - Updated loading indicator logic

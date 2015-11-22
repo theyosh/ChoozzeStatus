@@ -91,7 +91,7 @@ ApplicationWindow
 
     property bool dataLoading: false
     property bool __debug: false
-    property string version: '0.6'
+    property string version: '0.6.1'
 
     id: choozzeMainApp
     initialPage: Component { Home {} }
@@ -348,10 +348,10 @@ ApplicationWindow
             if (username !== choozzeDataObject.username || password !== choozzeDataObject.password) {
                 debug('Check new credentials...');
                 if (checkCredentials(username,password)) {
-                    notificationMessage(qsTr('The new credentials are saved'))
                     choozzeDataObject.username = username;
                     choozzeDataObject.password = password;
                     stopLoader();
+                    notificationMessage(qsTr('The new credentials are saved'))
                     updateData(true);
                 } else {
                     login = false;
@@ -362,9 +362,14 @@ ApplicationWindow
 
             if (data_update_timeout !== choozzeDataObject.data_update_timeout) {
                 call('ChoozzeScraper.choozzescraper.set_data_update_timeout', [data_update_timeout],function(result){
-                    debug('Update date update timeout: ' + result);
-                    choozzeDataObject.data_update_timeout = data_update_timeout
                     stopLoader();
+                    if (result) {
+                        choozzeDataObject.data_update_timeout = data_update_timeout
+                        notificationMessage(qsTr('Timeout set to %L1 hours').arg(choozzeDataObject.data_update_timeout))
+                    } else {
+                        notificationMessage(qsTr('Error updating timeout'))
+                    }
+
                 });
             }
             return login;

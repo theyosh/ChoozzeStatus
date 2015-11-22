@@ -14,7 +14,7 @@ Name:       ChoozzeStatus
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Choozze Account Status
 Version:    0.6
-Release:    0
+Release:    1
 Group:      Qt/Qt
 License:    LICENSE
 URL:        https://theyosh.nl/

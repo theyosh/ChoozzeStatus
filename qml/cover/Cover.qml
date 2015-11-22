@@ -54,6 +54,7 @@ CoverBackground {
     BusyIndicator {
         id: loader
         anchors.centerIn: parent
+        size: BusyIndicatorSize.Medium
         running: choozzeMainApp.dataLoading
     }
 

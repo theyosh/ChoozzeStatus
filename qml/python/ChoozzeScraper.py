@@ -445,8 +445,7 @@ class ChoozzeScraper:
     self.__print_debug('Get history data')
 
     # Create tempory history data array based on days
-    temp_data = {}
-    #self.history_data[str(self.application_data['last_update'])] = history
+    history_data = {}
 
     for history_update_date in self.history_data:
       # Copy of the data
@@ -454,13 +453,13 @@ class ChoozzeScraper:
       data['last_update'] = int(history_update_date)
 
       # Create date index in format 20151121
-      history_update_date = datetime.utcfromtimestamp(int(history_update_date)).strftime('%Y%m%d')
+      history_update_date = datetime.fromtimestamp(int(history_update_date)).strftime('%Y%m%d')
 
-      if history_update_date not in temp_data or temp_data[history_update_date]['last_update'] < data['last_update']:
-        temp_data[history_update_date] = data
+      if history_update_date not in history_data or history_data[history_update_date]['last_update'] < data['last_update']:
+        history_data[history_update_date] = data
 
-    self.__print_debug(temp_data)
-    return temp_data
+    self.__print_debug(history_data)
+    return history_data
 
   def reset_settings(self, save = True):
     self.application_data = {

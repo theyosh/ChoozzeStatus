@@ -46,6 +46,14 @@
         <source>Date      ///    Call left, SMS left, Data left</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Timeout set to %L1 hours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error updating timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Cover</name>
