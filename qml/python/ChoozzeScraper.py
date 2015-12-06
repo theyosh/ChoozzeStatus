@@ -18,7 +18,7 @@ import math
 import time
 import json
 import threading
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import Encryption
 
@@ -60,9 +60,9 @@ class ChoozzeScraper:
     self.regex_phonenumber = re.compile('<p>.*nummer:\s(?P<phonenumber>\+\d{11})\s*<\/p>')
     self.regex_mobile_plan = re.compile('<p>.*gekozen voor\s*(?P<mobileplan>[^</]+)<\/p>')
     self.regex_extra_costs = re.compile('<p>Buitenbundelkosten:\s(?P<currentcy>.*)(?P<extra_costs>\d+,\d+)\s*<\/p>')
-    self.regex_sms_usage   = re.compile('(?P<totalsms>\d+) SMSjes voor \S+ \((?P<usedsms>\d+)%[^</]+')
-    self.regex_call_usage  = re.compile('(?P<totalcall>\d+) belminuten voor \S+ \((?P<usedcall>\d+)%[^</]+')
-    self.regex_data_usage  = re.compile('(?P<totaldata>\d+)(?P<dataunit>[(M|G)B]+) mobiel internet \S+ \((?P<useddata>\d+)%[^</]+')
+    self.regex_sms_usage   = re.compile('(?P<totalsms>\d+) SMSjes[^)]+ \((?P<usedsms>\d+)%')
+    self.regex_call_usage  = re.compile('(?P<totalcall>\d+) belminuten[^)]+ \((?P<usedcall>\d+)%')
+    self.regex_data_usage  = re.compile('(?P<totaldata>\d+)(?P<dataunit>[(M|G)B]+) mobiel internet[^)]+\((?P<useddata>\d+)%')
     self.internetdata_unit = 1000
 
     # Voicemail regexes
@@ -221,6 +221,11 @@ class ChoozzeScraper:
       if 'callforward' == type:
         self.__parse_callforward_data(html)
 
+  # Credits: http://stackoverflow.com/questions/42950/get-last-day-of-the-month-in-python#13565185
+  def __days_in_month(self,any_day):
+    next_month = any_day.replace(day=28) + timedelta(days=4)  # this will never fail
+    return int((next_month - timedelta(days=next_month.day)).day)
+
   def __parse_account_data(self,html):
     self.application_data['mobile_number'] = self.regex_phonenumber.search(html).group('phonenumber')
     self.application_data['mobile_plan']   = self.regex_mobile_plan.search(html).group('mobileplan')
@@ -260,7 +265,7 @@ class ChoozzeScraper:
       self.application_data['data_usage']['free'] = int(self.application_data['data_usage']['total']) - int(self.application_data['data_usage']['used'])
 
     now = date.today()
-    self.application_data['days_usage']['total'] = (date(now.year, now.month+1, 1) - date(now.year, now.month, 1)).days
+    self.application_data['days_usage']['total'] = self.__days_in_month(now)
     self.application_data['days_usage']['used']  = now.day
     self.application_data['days_usage']['free']  = int(self.application_data['days_usage']['total']) - int(self.application_data['days_usage']['used'])
 

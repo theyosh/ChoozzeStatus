@@ -1,5 +1,5 @@
 .ChoozzeScraper.data.bin
 .ChoozzeScraper.history.bin
-ChoozzeStatus.pro.user
+ChoozzeStatus.pro.user*
 .DS_Store
 qml/python/__pycache__/

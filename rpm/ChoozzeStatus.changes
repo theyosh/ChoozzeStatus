@@ -8,6 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Dec 6 2015 TheYOSH <OpenRepos@theyosh.nl> 0.6.2
+- Fixed date exception. Caused the app not to start working.
+- Fixed regex match for getting the right amount of internet usage. Thanks to Maurits
+
 * Sun Nov 22 2015 TheYOSH <OpenRepos@theyosh.nl> 0.6.1
 - Removed not needed imports
 - Resized the loader icon

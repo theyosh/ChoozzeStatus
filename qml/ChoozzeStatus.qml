@@ -91,7 +91,7 @@ ApplicationWindow
 
     property bool dataLoading: false
     property bool __debug: false
-    property string version: '0.6.1'
+    property string version: '0.6.2'
 
     id: choozzeMainApp
     initialPage: Component { Home {} }

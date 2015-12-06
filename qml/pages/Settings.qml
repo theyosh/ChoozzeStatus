@@ -47,7 +47,7 @@ Dialog {
             id: updateTimeout
             width: parent.width
             inputMethodHints: Qt.ImhNoPredictiveText
-            label: qsTr('Update timeout')
+            label: qsTr('Update timeout in hours')
             placeholderText: qsTr('Enter the timeout in hours for updating')
             text: choozzeMainApp.choozzeData.data_update_timeout
             validator: IntValidator { bottom: 2; top: 24 }

@@ -245,15 +245,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Update timeout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enter the timeout in hours for updating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reset settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Update timeout in hours</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
